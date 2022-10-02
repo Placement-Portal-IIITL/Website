@@ -2,6 +2,12 @@
   "name": "website",
   "version": "0.1.0",
   "private": true,
+  "author": "Mrhb787",
+  "description": "Website for IIIT Lucknow Placements",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Placements-IIITL/Website.git"
+  },
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -34,5 +40,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "prettier": "latest"
   }
 }
