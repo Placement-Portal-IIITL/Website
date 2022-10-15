@@ -1,40 +1,47 @@
-.Login-container {
+.Recovery-container {
     min-height: 100vh;
     width: 100%;
     padding: 24px;
     background-color: aliceblue;
 }
 
-.Login-box {
+.Recovery-box {
     padding: 15px 24px;
 }
 
-.Login-box .MuiSvgIcon-root {
+.Recovery-box .MuiSvgIcon-root {
     font-size: 14px;
     color: rgb(104, 104, 255);
 }
 
-.Login-box .MuiSvgIcon-colorError {
+.Recovery-box .MuiSvgIcon-colorError {
     color: #d32f2f;
 }
 
-.Login-box .MuiSvgIcon-colorSuccess {
+.Recovery-box .MuiSvgIcon-colorSuccess {
     color: rgb(102 187 106)
 }
 
-.Login-box .MuiOutlinedInput-input {
+.Recovery-box .MuiOutlinedInput-input {
     font-size: 14px;
     font-weight: 500;
     font-family: "Nunito", sans-serif;
     text-transform: lowercase;
 }
 
-.MuiButton-root.Login-btn {
+.MuiButton-root.Recovery-btn {
     background-color: rgb(104, 104, 255);
     font-family: "Nunito", sans-serif;
 }
 
-.Login-container a {
+.Recovery-container a {
     font-family: "Nunito", sans-serif;
     color: rgb(104, 104, 255);
+}
+
+.Recovery-box .OTP-input .MuiOutlinedInput-input {
+    font-size: 18px;
+    font-weight: 800;
+    font-family: "nunito", sans-serif;
+    letter-spacing: 5px;
 }

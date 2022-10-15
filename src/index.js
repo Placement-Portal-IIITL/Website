@@ -5,17 +5,20 @@ import "./index.css";
 import App from "./Components/App/App";
 import reportWebVitals from "./reportWebVitals";
 
+// Routing
+import { BrowserRouter as Router } from "react-router-dom";
+
 // Context
 import { CurrentUserProvider } from "./Context/userContext";
-
-// Page Title
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <CurrentUserProvider>
-      <App />
-    </CurrentUserProvider>
+    <Router>
+      <CurrentUserProvider>
+        <App />
+      </CurrentUserProvider>
+    </Router>
   </React.StrictMode>
 );
 reportWebVitals();

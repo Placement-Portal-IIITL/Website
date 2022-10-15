@@ -1,5 +1,6 @@
 // Hooks
 import { createContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 // API
 import axios from "../axios";
@@ -11,6 +12,7 @@ export const UserContext = createContext();
 const userLocal = "IIITL_Placement_Portal_User";
 
 export const CurrentUserProvider = (props) => {
+  const navigate = useNavigate();
   // user state Context
   const [user, setUser] = useState(JSON.parse(localStorage.getItem(userLocal)));
 
@@ -31,14 +33,16 @@ export const CurrentUserProvider = (props) => {
           setUser(null);
           localStorage.removeItem(userLocal);
           delete axios.defaults.headers.common["Authorization"];
+          navigate("/Login");
         });
     };
 
     // if user is logged in then only check for token expiry
     if (user) {
       checkLoggedIn();
+      localStorage.setItem(userLocal, JSON.stringify(user));
     }
-  }, [user, setUser, user?.authHeader]);
+  }, [user]);
 
   return <UserContext.Provider value={[user, setUser]}>{props.children}</UserContext.Provider>;
 };

@@ -17,22 +17,66 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import PasswordIcon from "@mui/icons-material/Lock";
 import ErrorIcon from "@mui/icons-material/ErrorOutline";
+import DoneIcon from "@mui/icons-material/Done";
+import DoneAllIcon from "@mui/icons-material/DoneAll";
+
+// verify email is correct or not
+const checkEmail = (email) => {
+  if (!email.includes("@")) return false;
+
+  const domainIIITL = "iiitl.ac.in";
+  let emailDomain = email.split("@");
+  emailDomain = emailDomain[1];
+
+  if (domainIIITL !== emailDomain) return false;
+  return true;
+};
 
 const Login = () => {
   // Login Data States
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [params, setParams] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
 
   // Loading States
   const [LoginLoad, setLoginLoad] = useState(false);
+  const [open, setOpen] = useState(false);
 
   // Error States
+  const [validMail, setValidMail] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const [emailErrorMsg, setEmailErrorMsg] = useState("");
   const [passwordErrorMsg, setpasswordErrorMsg] = useState("");
-  const [defaultError, setDefaultError] = useState(false);
+  const [defaultError, setDefaultError] = useState({ title: "", body: "" });
+
+  // Handle params change
+  const handleChange = (e) => {
+    setParams({ ...params, [e.target.name]: e.target.value });
+    if (e.target.name === "email") {
+      setValidMail(checkEmail(e.target.value));
+    }
+  };
+
+  // show or hide password
+  const togglePassword = () => {
+    setShowPassword((prev) => !prev);
+  };
+
+  // check if mail is valid & password is not empty
+  const preCheck = () => {
+    return validMail && params.password.length;
+  };
+
+  const handleLogin = () => {
+    if (preCheck()) {
+    } else {
+      setOpen(true);
+      setDefaultError({
+        title: "Fill All Fields",
+        body: "Please fill all fields correctly and try again",
+      });
+    }
+  };
 
   return (
     <Stack justifyContent="center" alignItems="center" className="Login-container">
@@ -59,20 +103,28 @@ const Login = () => {
                   ),
                   endAdornment: (
                     <InputAdornment position="end">
-                      {!emailError ? (
-                        <IconButton>
+                      <IconButton>
+                        {emailError ? (
                           <ErrorIcon color="error" />
-                        </IconButton>
-                      ) : null}
+                        ) : validMail ? (
+                          <DoneAllIcon color="success" />
+                        ) : (
+                          <DoneIcon />
+                        )}
+                      </IconButton>
                     </InputAdornment>
                   ),
                 }}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                name="email"
+                value={params.email}
+                onChange={handleChange}
+                helperText={emailError ? emailErrorMsg : " "}
+                error={emailError}
+                autoComplete="email"
               />
               <TextField
                 variant="outlined"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -81,30 +133,38 @@ const Login = () => {
                   ),
                   endAdornment: (
                     <InputAdornment position="end">
-                      {passwordError ? (
-                        <ErrorIcon />
-                      ) : showPassword ? (
-                        <IconButton>
+                      <IconButton onClick={togglePassword}>
+                        {passwordError ? (
+                          <ErrorIcon />
+                        ) : showPassword ? (
                           <VisibilityIcon />
-                        </IconButton>
-                      ) : (
-                        <IconButton>
+                        ) : (
                           <VisibilityOffIcon />
-                        </IconButton>
-                      )}
+                        )}
+                      </IconButton>
                     </InputAdornment>
                   ),
                 }}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                name="password"
+                value={params.password}
+                onChange={handleChange}
+                helperText={passwordError ? passwordErrorMsg : " "}
+                error={passwordError}
+                autoComplete="password"
               />
-              <Button className="Login-btn" variant="contained">
+              <Button
+                className="Login-btn"
+                variant="contained"
+                onClick={handleLogin}
+                endIcon={LoginLoad ? <CircularProgress color="inherit" size={15} /> : null}
+                disabled={LoginLoad}
+              >
                 Sign In
               </Button>
             </Stack>
             <Typography variant="caption" sx={{ fontFamily: "Nunito" }}>
-              Forgot Your Password?{" "}
-              <Link to="/Recovery">
+              Forgot Your Password ?{" "}
+              <Link to={params.email ? `/Recovery/${params.email}` : "/Recovery"}>
                 <strong>Reset Password</strong>
               </Link>
             </Typography>
@@ -116,6 +176,21 @@ const Login = () => {
           </Link>
         </Typography>
       </Stack>
+      <Snackbar
+        open={open}
+        autoHideDuration={5000}
+        onClose={(e, reason) => {
+          if (reason === "clickaway") return;
+          setOpen(false);
+        }}
+      >
+        <Alert onClose={() => setOpen(false)} severity="error">
+          <AlertTitle>
+            <strong>{defaultError.title}</strong>
+          </AlertTitle>
+          {defaultError.body}
+        </Alert>
+      </Snackbar>
     </Stack>
   );
 };
