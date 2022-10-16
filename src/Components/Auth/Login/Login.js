@@ -1,6 +1,10 @@
 // Hooks
 import { useState, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { UserContext } from "../../../Context/userContext";
+
+// API
+import axios from "../../../axios";
 
 // MUI Components
 import { Stack, Paper, Typography } from "@mui/material";
@@ -33,6 +37,12 @@ const checkEmail = (email) => {
 };
 
 const Login = () => {
+  // calling hooks
+  const navigate = useNavigate();
+
+  // User Context
+  const [user, setUser] = useContext(UserContext);
+
   // Login Data States
   const [params, setParams] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
@@ -69,6 +79,18 @@ const Login = () => {
 
   const handleLogin = () => {
     if (preCheck()) {
+      const LoginURL = "";
+      axios
+        .post(LoginURL, params)
+        .then((res) => {
+          axios.defaults.headers.common["Authorization"] = `Bearer ${res.data.token}`;
+          setUser({
+            authHeader: `Bearer ${res.data.token}`,
+            email: params.email,
+          });
+          navigate("/");
+        })
+        .catch((err) => {});
     } else {
       setOpen(true);
       setDefaultError({
@@ -92,76 +114,79 @@ const Login = () => {
                 Enter your credentials to access Portal
               </Typography>
             </Stack>
-            <Stack spacing={1}>
-              <TextField
-                variant="outlined"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <MailIcon />
-                    </InputAdornment>
-                  ),
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton>
-                        {emailError ? (
-                          <ErrorIcon color="error" />
-                        ) : validMail ? (
-                          <DoneAllIcon color="success" />
-                        ) : (
-                          <DoneIcon />
-                        )}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-                name="email"
-                value={params.email}
-                onChange={handleChange}
-                helperText={emailError ? emailErrorMsg : " "}
-                error={emailError}
-                autoComplete="email"
-              />
-              <TextField
-                variant="outlined"
-                type={showPassword ? "text" : "password"}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <PasswordIcon />
-                    </InputAdornment>
-                  ),
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton onClick={togglePassword}>
-                        {passwordError ? (
-                          <ErrorIcon />
-                        ) : showPassword ? (
-                          <VisibilityIcon />
-                        ) : (
-                          <VisibilityOffIcon />
-                        )}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-                name="password"
-                value={params.password}
-                onChange={handleChange}
-                helperText={passwordError ? passwordErrorMsg : " "}
-                error={passwordError}
-                autoComplete="password"
-              />
-              <Button
-                className="Login-btn"
-                variant="contained"
-                onClick={handleLogin}
-                endIcon={LoginLoad ? <CircularProgress color="inherit" size={15} /> : null}
-                disabled={LoginLoad}
-              >
-                Sign In
-              </Button>
-            </Stack>
+            <form noValidate>
+              <Stack spacing={1}>
+                <TextField
+                  variant="outlined"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <MailIcon />
+                      </InputAdornment>
+                    ),
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton>
+                          {emailError ? (
+                            <ErrorIcon color="error" />
+                          ) : validMail ? (
+                            <DoneAllIcon color="success" />
+                          ) : (
+                            <DoneIcon />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                  name="email"
+                  value={params.email}
+                  onChange={handleChange}
+                  helperText={emailError ? emailErrorMsg : " "}
+                  error={emailError}
+                  autoComplete="email"
+                />
+                <TextField
+                  variant="outlined"
+                  type={showPassword ? "text" : "password"}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <PasswordIcon />
+                      </InputAdornment>
+                    ),
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton onClick={togglePassword}>
+                          {passwordError ? (
+                            <ErrorIcon />
+                          ) : showPassword ? (
+                            <VisibilityIcon />
+                          ) : (
+                            <VisibilityOffIcon />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                  name="password"
+                  value={params.password}
+                  onChange={handleChange}
+                  helperText={passwordError ? passwordErrorMsg : " "}
+                  error={passwordError}
+                  autoComplete="password"
+                />
+                <Button
+                  className="Login-btn"
+                  variant="contained"
+                  onClick={handleLogin}
+                  endIcon={LoginLoad ? <CircularProgress color="inherit" size={15} /> : null}
+                  disabled={LoginLoad}
+                >
+                  Sign In
+                </Button>
+              </Stack>
+            </form>
+
             <Typography variant="caption" sx={{ fontFamily: "Nunito" }}>
               Forgot Your Password ?{" "}
               <Link to={params.email ? `/Recovery/${params.email}` : "/Recovery"}>

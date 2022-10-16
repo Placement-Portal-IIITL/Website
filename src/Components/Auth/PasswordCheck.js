@@ -21,7 +21,7 @@ const Check = ({ Icon, text }) => {
   );
 };
 
-const PasswordCheck = ({ password }) => {
+const PasswordCheck = ({ password, passwordCheck, setPasswordCheck }) => {
   const [checks, setChecks] = useState([false, false, false, false]);
 
   // checks all password parameters
@@ -32,6 +32,8 @@ const PasswordCheck = ({ password }) => {
     Checks[2] = /[a-z]/.test(password);
     Checks[3] = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(password);
     setChecks(Checks);
+    if (checks[0] && checks[1] && checks[2] && checks[3]) setPasswordCheck(true);
+    else setPasswordCheck(false);
     return checks;
   };
 

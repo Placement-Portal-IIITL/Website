@@ -5,6 +5,7 @@ import { Routes, Route } from "react-router-dom";
 import Home from "../Home/Home";
 import Login from "../Auth/Login/Login";
 import Recovery from "../Auth/Recovery/Recovery";
+import Signup from "../Auth/Signup/Signup";
 
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
           <Route path=":email" element={<Recovery />} />
           <Route path="" element={<Recovery />} />
         </Route>
+        <Route path="/Signup" element={<Signup />} />
       </Routes>
     </div>
   );

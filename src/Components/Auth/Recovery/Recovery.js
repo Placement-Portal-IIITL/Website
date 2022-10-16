@@ -2,6 +2,9 @@
 import { useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 
+// API
+import axios from "../../../axios";
+
 // MUI Components
 import { Stack, Paper, Typography } from "@mui/material";
 import { TextField, Button, IconButton, InputAdornment } from "@mui/material";
@@ -21,7 +24,7 @@ import DoneIcon from "@mui/icons-material/Done";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 
 // custom Components
-import OTP from "./OTP";
+import OTP from "../OTP";
 import PasswordCheck from "../PasswordCheck";
 
 // verify email is correct or not
@@ -36,7 +39,7 @@ const checkEmail = (email) => {
   return true;
 };
 
-const Login = () => {
+const Recovery = () => {
   // calling hooks
   const mailParam = useParams();
   const navigate = useNavigate();
@@ -47,20 +50,19 @@ const Login = () => {
     otp: "",
     password: "",
   });
+  const [otp, setOtp] = useState("");
   const [verifyPassword, setVerifyPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showVerifyPassword, setShowVerifyPassword] = useState(false);
+  const [passwordCheck, setPasswordCheck] = useState(false);
+  const [otpValid, setOtpValid] = useState(false);
 
   // Loading States
-  const [LoginLoad, setLoginLoad] = useState(false);
+  const [PasswordLoad, setPasswordLoad] = useState(false);
   const [open, setOpen] = useState(false);
 
   // Error States
   const [validMail, setValidMail] = useState(mailParam.email ? checkEmail(mailParam.email) : false);
-  const [emailError, setEmailError] = useState(false);
-  const [passwordError, setPasswordError] = useState(false);
-  const [emailErrorMsg, setEmailErrorMsg] = useState("");
-  const [passwordErrorMsg, setpasswordErrorMsg] = useState("");
   const [defaultError, setDefaultError] = useState({ title: "", body: "" });
 
   // Handle params change
@@ -77,21 +79,23 @@ const Login = () => {
     else if (type === 1) setShowVerifyPassword((prev) => !prev);
   };
 
-  // check if mail is valid & password is not empty
-  const preCheck = () => {
-    return validMail && params.password.length;
+  // update password
+  const handlePasswordUpdate = () => {
+    const updateURL = "";
+    setPasswordLoad(true);
+    axios
+      .post(updateURL, { ...params, otp: otp })
+      .then((res) => {
+        setPasswordLoad(false);
+        handleLogin();
+      })
+      .catch((err) => {
+        setPasswordLoad(false);
+      });
   };
 
-  const handleLogin = () => {
-    if (preCheck()) {
-    } else {
-      setOpen(true);
-      setDefaultError({
-        title: "Fill All Fields",
-        body: "Please fill all fields correctly and try again",
-      });
-    }
-  };
+  // login post successfull password update
+  const handleLogin = () => {};
 
   return (
     <Stack justifyContent="center" alignItems="center" className="Recovery-container">
@@ -107,6 +111,7 @@ const Login = () => {
                 Use your institute Mail Id to reset your password
               </Typography>
             </Stack>
+
             <Stack spacing={2}>
               <TextField
                 variant="outlined"
@@ -120,13 +125,7 @@ const Login = () => {
                   endAdornment: (
                     <InputAdornment position="end">
                       <IconButton>
-                        {emailError ? (
-                          <ErrorIcon color="error" />
-                        ) : validMail ? (
-                          <DoneAllIcon color="success" />
-                        ) : (
-                          <DoneIcon />
-                        )}
+                        {validMail ? <DoneAllIcon color="success" /> : <DoneIcon />}
                       </IconButton>
                     </InputAdornment>
                   ),
@@ -134,11 +133,10 @@ const Login = () => {
                 name="email"
                 value={params.email}
                 onChange={handleChange}
-                helperText={emailError ? emailErrorMsg : "Please Enter Institute Mail Id"}
-                error={emailError}
+                helperText="Please Enter Institute Mail Id"
                 autoComplete="off"
               />
-              <OTP otp={params.otp} email={params.email} />
+              <OTP otp={otp} setOtp={setOtp} email={params.email} setOtpValid={setOtpValid} />
               <TextField
                 variant="outlined"
                 label="New Password"
@@ -152,13 +150,7 @@ const Login = () => {
                   endAdornment: (
                     <InputAdornment position="end">
                       <IconButton onClick={() => togglePassword(0)}>
-                        {passwordError ? (
-                          <ErrorIcon />
-                        ) : showPassword ? (
-                          <VisibilityIcon />
-                        ) : (
-                          <VisibilityOffIcon />
-                        )}
+                        {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
                       </IconButton>
                     </InputAdornment>
                   ),
@@ -166,8 +158,6 @@ const Login = () => {
                 name="password"
                 value={params.password}
                 onChange={handleChange}
-                helperText={passwordError ? passwordErrorMsg : " "}
-                error={passwordError}
                 autoComplete="off"
               />
               <TextField
@@ -183,13 +173,7 @@ const Login = () => {
                   endAdornment: (
                     <InputAdornment position="end">
                       <IconButton onClick={() => togglePassword(1)}>
-                        {passwordError ? (
-                          <ErrorIcon />
-                        ) : showVerifyPassword ? (
-                          <VisibilityIcon />
-                        ) : (
-                          <VisibilityOffIcon />
-                        )}
+                        {showVerifyPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
                       </IconButton>
                     </InputAdornment>
                   ),
@@ -199,17 +183,22 @@ const Login = () => {
                 onChange={(e) => setVerifyPassword(e.target.value)}
                 autoComplete="off"
               />
-              <PasswordCheck password={params.password} />
+              <PasswordCheck
+                password={params.password}
+                passwordCheck={passwordCheck}
+                setPasswordCheck={setPasswordCheck}
+              />
               <Button
                 className="Recovery-btn"
                 variant="contained"
-                onClick={handleLogin}
-                endIcon={LoginLoad ? <CircularProgress color="inherit" size={15} /> : null}
-                disabled={LoginLoad}
+                onClick={handlePasswordUpdate}
+                endIcon={PasswordLoad ? <CircularProgress color="inherit" size={12} /> : null}
+                disabled={PasswordLoad || !passwordCheck || !otpValid}
               >
                 Verify
               </Button>
             </Stack>
+
             <Typography variant="caption" sx={{ fontFamily: "Nunito" }}>
               Already Registered ?{" "}
               <Link to="/Login">
@@ -243,4 +232,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Recovery;
