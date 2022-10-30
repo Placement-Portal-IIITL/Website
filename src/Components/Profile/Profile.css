@@ -1,0 +1,14 @@
+.profile-navLink {
+    padding: 5px 10px;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.profile-navLink:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    transition: 0.3s;
+}
+
+.profile-navLink.active {
+    background-color: rgba(0, 0, 0, 0.1);
+}

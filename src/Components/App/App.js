@@ -7,6 +7,7 @@ import Home from "../Home/Home";
 import Login from "../Auth/Login/Login";
 import Recovery from "../Auth/Recovery/Recovery";
 import Signup from "../Auth/Signup/Signup";
+import Profile from "../Profile/Profile";
 
 const App = () => {
   return (
@@ -20,6 +21,10 @@ const App = () => {
           <Route path="" element={<Recovery />} />
         </Route>
         <Route path="/Signup" element={<Signup />} />
+        <Route path="/Profile">
+          <Route path="" element={<Profile />} />
+          <Route path=":subprofile" element={<Profile />} />
+        </Route>
       </Routes>
     </div>
   );
