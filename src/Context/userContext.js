@@ -17,7 +17,7 @@ export const CurrentUserProvider = (props) => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem(userLocal)));
 
   // Urls
-  const profileURL = "";
+  const profileURL = "/getUserProfile";
 
   // On Website Load check for LoggedIn token expiry
   useEffect(() => {
@@ -30,10 +30,15 @@ export const CurrentUserProvider = (props) => {
         })
         .catch((error) => {
           // token invalid
-          setUser(null);
-          localStorage.removeItem(userLocal);
-          delete axios.defaults.headers.common["Authorization"];
-          navigate("/Login");
+          axios
+            .get("/signOut")
+            .then((res) => {
+              setUser(null);
+              localStorage.removeItem(userLocal);
+              delete axios.defaults.headers.common["Authorization"];
+              navigate("/Login");
+            })
+            .catch((err) => {});
         });
     };
 

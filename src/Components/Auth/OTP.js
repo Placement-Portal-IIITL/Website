@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 // API
 import axios from "../../axios";
@@ -17,7 +17,7 @@ const checkOtp = (otp) => {
   return otp.length === 6 && /^\d+$/.test(otp);
 };
 
-const OTP = ({ otp, setOtp, email, setOtpValid }) => {
+const OTP = ({ otp, setOtp, email, setOtpValid, url }) => {
   const [otpCheck, setOtpCheck] = useState(checkOtp(otp));
 
   // Loading States
@@ -26,28 +26,25 @@ const OTP = ({ otp, setOtp, email, setOtpValid }) => {
   // Error States
   const [otpError, setOtpError] = useState(false);
   const [errMsg, setErrMsg] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
 
   // sending otp again to registered mail
   const sendOtp = () => {
-    const otpSendURL = "";
+    const otpSendURL = url;
     const params = { email: email };
     setLoading(true);
     axios
       .post(otpSendURL, params)
       .then((res) => {
-        setOtp(res.data.otp);
+        setSuccessMsg(res.data.msg);
         setLoading(false);
       })
       .catch((err) => {
         setOtpError(true);
-        // setErrMsg(err.response.data);
+        setErrMsg(err.response.data.error);
         setLoading(false);
       });
   };
-
-  // useEffect(() => {
-  //   sendOtp();
-  // }, []);
 
   return (
     <form noValidate>
@@ -71,7 +68,7 @@ const OTP = ({ otp, setOtp, email, setOtpValid }) => {
                   color="success"
                   variant="outlined"
                   sx={{ textTransform: "none", fontSize: "11px" }}
-                  // onClick={sendOtp}
+                  onClick={sendOtp}
                   endIcon={Loading ? <CircularProgress color="inherit" size={9} /> : null}
                 >
                   Resend OTP
@@ -83,12 +80,18 @@ const OTP = ({ otp, setOtp, email, setOtpValid }) => {
         name="OTP-verify"
         value={otp}
         onChange={(e) => {
-          setOtp(e.target.value);
-          setOtpCheck(checkOtp(e.target.value));
-          setOtpValid(checkOtp(e.target.value));
+          setOtp(e.target.value.trim());
+          setOtpCheck(checkOtp(e.target.value.trim()));
+          setOtpValid(checkOtp(e.target.value.trim()));
         }}
         autoComplete="off"
-        helperText={otpError ? errMsg : "Enter 6 digit OTP recieved in Registered Mail Id"}
+        helperText={
+          otpError
+            ? errMsg
+            : successMsg.length
+            ? successMsg
+            : "Enter 6 digit OTP recieved in Registered Mail Id"
+        }
         error={otpError}
       />
     </form>

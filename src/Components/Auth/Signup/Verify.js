@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import { UserContext } from "../../../Context/userContext";
 import { useNavigate } from "react-router-dom";
 
@@ -24,40 +24,25 @@ const Verify = ({ email, password }) => {
   const [otpValid, setOtpValid] = useState(false);
   const [verifyLoading, setVerifyLoading] = useState(false);
 
-  // sending otp again to registered mail
-  const sendOtp = () => {
-    const otpSendURL = "";
-    const params = { email: email };
+  // handle OTP verification
+  const handleVerify = () => {
+    const verifyURL = "/verifyEmail";
+    const verifyParams = { email: email, otp: otp };
+    setVerifyLoading(true);
     axios
-      .post(otpSendURL, params)
-      .then((res) => {})
+      .post(verifyURL, verifyParams)
+      .then((res) => {
+        setVerifyLoading(false);
+        handleLogin();
+      })
       .catch((err) => {
-        // setErrMsg(err.response.data);
+        setVerifyLoading(false);
       });
   };
 
-  // handle OTP verification
-  const handleVerify = () => {
-    const verifyURL = "";
-    const verifyParams = { email: email, otp: otp };
-    console.log(verifyParams);
-    setVerifyLoading(true);
-    // axios
-    //   .post(verifyURL, verifyParams)
-    //   .then((res) => {
-    //   setVerifyLoading(false);
-    //     setVerified(true);
-    //   })
-    //   .catch((err) => {});
-  };
-
-  // useEffect(() => {
-  //   sendOtp();
-  // }, []);
-
   // Handle Login post verification
   const handleLogin = () => {
-    const LoginURL = "";
+    const LoginURL = "/signIn";
     const params = { email: email, password: password };
     axios
       .post(LoginURL, params)
@@ -77,7 +62,13 @@ const Verify = ({ email, password }) => {
       <Typography variant="body2" sx={{ fontFamily: "Nunito", fontWeight: "bold" }} color="primary">
         Please Enter OTP sent to your mail
       </Typography>
-      <OTP otp={otp} setOtp={setOtp} email={email} setOtpValid={setOtpValid} />
+      <OTP
+        otp={otp}
+        setOtp={setOtp}
+        email={email}
+        setOtpValid={setOtpValid}
+        url="/sendVerifyEmailOtp"
+      />
       <Button
         onClick={handleVerify}
         className="Signup-btn"

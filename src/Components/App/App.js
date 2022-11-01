@@ -20,7 +20,10 @@ const App = () => {
           <Route path=":email" element={<Recovery />} />
           <Route path="" element={<Recovery />} />
         </Route>
-        <Route path="/Signup" element={<Signup />} />
+        <Route path="/Signup">
+          <Route path="" element={<Signup />} />
+          <Route path=":verifyEmail" element={<Signup />} />
+        </Route>
         <Route path="/Profile">
           <Route path="" element={<Profile />} />
           <Route path=":subprofile" element={<Profile />} />

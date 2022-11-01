@@ -3,8 +3,11 @@ import React, { useState, useContext } from "react";
 import { UserContext } from "../../../Context/userContext";
 import { Link } from "react-router-dom";
 
+// API
+import axios from "../../../axios";
+
 // MUI Components
-import { Avatar, IconButton, Typography, Tooltip } from "@mui/material";
+import { Avatar, IconButton, Typography, CircularProgress } from "@mui/material";
 import { Menu, MenuItem, Divider, ListItemIcon } from "@mui/material";
 
 // MUI Icons
@@ -23,10 +26,17 @@ const UserIcon = () => {
   );
 };
 
+// local storage variable name
+const userLocal = "IIITL_Placement_Portal_User";
+
 const NavMenu = () => {
+  // user context
+  const [user, setUser] = useContext(UserContext);
+
   // states
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+  const [LogoutLoad, setLogoutLoad] = useState(false);
 
   // handle open Menu
   const handleClick = (e) => {
@@ -53,11 +63,22 @@ const NavMenu = () => {
   };
 
   const LogoutItem = ({ Icon, text }) => {
-    const handleLogout = () => {};
+    const handleLogout = () => {
+      setLogoutLoad(true);
+      axios
+        .get("/signOut")
+        .then((res) => {
+          setUser(null);
+          localStorage.removeItem(userLocal);
+          delete axios.defaults.headers.common["Authorization"];
+          setLogoutLoad(false);
+        })
+        .catch((err) => {});
+    };
     return (
       <MenuItem onClick={handleLogout}>
         <ListItemIcon>
-          {Icon}
+          {LogoutLoad ? <CircularProgress size={15} color="inherit" /> : Icon}
           <Typography variant="body2" color="text.secondary" ml={1} sx={{ fontFamily: "nunito" }}>
             {text}
           </Typography>
@@ -117,8 +138,8 @@ const NavMenu = () => {
         <Item Icon={<PersonIcon fontSize="small" />} text="Profile" url="/profile" />
         <Item Icon={<TeamIcon fontSize="small" />} text="Team Workspace" url="/team" />
         <Item Icon={<TpoIcon fontSize="small" />} text="TPO Portal" url="/tpo" />
-        <Divider />
-        <LogoutItem Icon={<LogoutIcon fontSize="small" color="error" />} text="Logout" />
+        {user && <Divider />}
+        {user && <LogoutItem Icon={<LogoutIcon fontSize="small" color="error" />} text="Logout" />}
       </Menu>
     </React.Fragment>
   );

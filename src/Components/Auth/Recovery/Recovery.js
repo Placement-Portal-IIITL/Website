@@ -1,5 +1,6 @@
 // Hooks
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { UserContext } from "../../../Context/userContext";
 import { Link, useParams, useNavigate } from "react-router-dom";
 
 // API
@@ -40,6 +41,9 @@ const checkEmail = (email) => {
 };
 
 const Recovery = () => {
+  // user context
+  const [user, setUser] = useContext(UserContext);
+
   // calling hooks
   const mailParam = useParams();
   const navigate = useNavigate();
@@ -64,6 +68,8 @@ const Recovery = () => {
   // Error States
   const [validMail, setValidMail] = useState(mailParam.email ? checkEmail(mailParam.email) : false);
   const [defaultError, setDefaultError] = useState({ title: "", body: "" });
+  const [emailError, setEmailError] = useState(false);
+  const [emailErrorMsg, setEmailErrorMsg] = useState("");
 
   // Handle params change
   const handleChange = (e) => {
@@ -81,8 +87,9 @@ const Recovery = () => {
 
   // update password
   const handlePasswordUpdate = () => {
-    const updateURL = "";
+    const updateURL = "/resetPassword";
     setPasswordLoad(true);
+    setEmailError(false);
     axios
       .post(updateURL, { ...params, otp: otp })
       .then((res) => {
@@ -90,12 +97,37 @@ const Recovery = () => {
         handleLogin();
       })
       .catch((err) => {
+        console.log(err.response.data);
+        err.response.data.errors.map((error) => {
+          if (error.param === "email") {
+            setEmailError(true);
+            setEmailErrorMsg(error.error);
+          } else {
+            setOpen(true);
+            setDefaultError({ title: error.param, body: error.error });
+          }
+          return;
+        });
         setPasswordLoad(false);
       });
   };
 
   // login post successfull password update
-  const handleLogin = () => {};
+  const handleLogin = () => {
+    const LoginURL = "/signIn";
+    const loginParams = { email: params.email, password: params.password };
+    axios
+      .post(LoginURL, loginParams)
+      .then((res) => {
+        axios.defaults.headers.common["Authorization"] = `Bearer ${res.data.token}`;
+        setUser({
+          authHeader: `Bearer ${res.data.token}`,
+          email: loginParams.email,
+        });
+        navigate("/");
+      })
+      .catch((err) => {});
+  };
 
   return (
     <Stack justifyContent="center" alignItems="center" className="Recovery-container">
@@ -133,10 +165,17 @@ const Recovery = () => {
                 name="email"
                 value={params.email}
                 onChange={handleChange}
-                helperText="Please Enter Institute Mail Id"
+                helperText={emailError ? emailErrorMsg : "Please Enter Institute Mail Id"}
                 autoComplete="off"
+                error={emailError}
               />
-              <OTP otp={otp} setOtp={setOtp} email={params.email} setOtpValid={setOtpValid} />
+              <OTP
+                otp={otp}
+                setOtp={setOtp}
+                email={params.email}
+                setOtpValid={setOtpValid}
+                url="/sendResetPasswordOtp"
+              />
               <TextField
                 variant="outlined"
                 label="New Password"
@@ -182,6 +221,11 @@ const Recovery = () => {
                 value={verifyPassword}
                 onChange={(e) => setVerifyPassword(e.target.value)}
                 autoComplete="off"
+                helperText={
+                  verifyPassword.length && verifyPassword === params.password
+                    ? "Password Matches"
+                    : ""
+                }
               />
               <PasswordCheck
                 password={params.password}
@@ -193,7 +237,7 @@ const Recovery = () => {
                 variant="contained"
                 onClick={handlePasswordUpdate}
                 endIcon={PasswordLoad ? <CircularProgress color="inherit" size={12} /> : null}
-                disabled={PasswordLoad || !passwordCheck || !otpValid}
+                disabled={PasswordLoad || !otpValid || verifyPassword !== params.password}
               >
                 Verify
               </Button>

@@ -1,5 +1,6 @@
 // Hooks
 import { useState, useContext } from "react";
+import { UserContext } from "../../../Context/userContext";
 import { useNavigate } from "react-router-dom";
 
 // MUI Components
@@ -36,6 +37,9 @@ const NavTitle = () => {
 };
 
 const NavBar = () => {
+  // user context
+  const [user, setUser] = useContext(UserContext);
+
   // calling hooks
   const navigate = useNavigate();
 
@@ -44,10 +48,12 @@ const NavBar = () => {
       <AppBar position="sticky" className="NavBar">
         <Toolbar sx={{ height: 48 }}>
           <NavTitle />
-          <NavMenu />
-          {/* <Button className="NavBar-Login-Btn" onClick={() => navigate("/Login")}>
-            Login
-          </Button> */}
+          {user && <NavMenu />}
+          {!user && (
+            <Button className="NavBar-Login-Btn" onClick={() => navigate("/Login")}>
+              Login
+            </Button>
+          )}
         </Toolbar>
       </AppBar>
     </Box>

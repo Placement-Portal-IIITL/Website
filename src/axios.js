@@ -3,7 +3,7 @@ import axios from "axios";
 const userLocal = "IIITL_Placement_Portal_User";
 
 const instance = axios.create({
-  baseURL: "",
+  baseURL: "https://placements-iiitl.herokuapp.com/",
   withCredentials: true,
 });
 

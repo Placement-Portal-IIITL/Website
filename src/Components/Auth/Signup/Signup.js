@@ -19,7 +19,6 @@ import MailIcon from "@mui/icons-material/Mail";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import PasswordIcon from "@mui/icons-material/Lock";
-import ErrorIcon from "@mui/icons-material/ErrorOutline";
 import DoneIcon from "@mui/icons-material/Done";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 import NameIcon from "@mui/icons-material/Person";
@@ -43,13 +42,13 @@ const checkEmail = (email) => {
 
 const Signup = () => {
   // calling hooks
-  const mailParam = useParams();
+  const Panel = useParams();
   const navigate = useNavigate();
 
   // Signup Data States
   const [params, setParams] = useState({
     name: "",
-    email: "",
+    email: Panel.verifyEmail ? Panel.verifyEmail : "",
     password: "",
   });
   const [firstName, setFirstName] = useState("");
@@ -58,21 +57,21 @@ const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showVerifyPassword, setShowVerifyPassword] = useState(false);
   const [passwordCheck, setPasswordCheck] = useState(false);
-  const [panel, setPanel] = useState(0);
+  const [panel, setPanel] = useState(Panel.verifyEmail ? 1 : 0);
 
   // Loading States
   const [SignupLoad, setSignupLoad] = useState(false);
   const [open, setOpen] = useState(false);
 
   // Error States
-  const [validMail, setValidMail] = useState(mailParam.email ? checkEmail(mailParam.email) : false);
+  const [validMail, setValidMail] = useState(false);
   const [defaultError, setDefaultError] = useState({ title: "", body: "" });
 
   // Handle params change
   const handleChange = (e) => {
-    setParams({ ...params, [e.target.name]: e.target.value });
+    setParams({ ...params, [e.target.name]: e.target.value.trim() });
     if (e.target.name === "email") {
-      setValidMail(checkEmail(e.target.value));
+      setValidMail(checkEmail(e.target.value.trim()));
     }
   };
 
@@ -84,25 +83,30 @@ const Signup = () => {
 
   // check if mail is valid & password is not empty
   const preCheck = () => {
-    return validMail && params.password.length && params.name.length > 3;
+    // iiitl no checked for now
+    return params.password.length && (firstName.trim() + " " + lastName.trim()).length > 3;
   };
 
   // update password
   const handleSignup = () => {
-    const signupURL = "";
-    setParams({ ...params, name: firstName + " " + lastName });
+    const signupURL = "/signUp";
+    setParams({ ...params, name: firstName.trim() + " " + lastName.trim() });
     setSignupLoad(true);
     if (preCheck()) {
       axios
-        .post(signupURL, params)
+        .post(signupURL, { ...params, name: firstName.trim() + " " + lastName.trim() })
         .then((res) => {
           setPanel(1);
+          navigate(`/Signup/${params.email}`);
           setSignupLoad(false);
         })
         .catch((err) => {
+          console.log(err.response.data);
           setSignupLoad(false);
         });
     } else {
+      setOpen(true);
+      setSignupLoad(false);
       setDefaultError({
         title: "Error",
         body: "Please Fill All Fields Correctly!",
@@ -129,6 +133,7 @@ const Signup = () => {
                 <Stack spacing={2} direction="row">
                   <TextField
                     variant="outlined"
+                    type="text"
                     label="First Name"
                     InputProps={{
                       startAdornment: (
@@ -226,6 +231,17 @@ const Signup = () => {
                   value={verifyPassword}
                   onChange={(e) => setVerifyPassword(e.target.value)}
                   autoComplete="off"
+                  error={verifyPassword.length > 0 && verifyPassword !== params.password}
+                  color={
+                    params.password.length > 0 && verifyPassword === params.password
+                      ? "success"
+                      : "primary"
+                  }
+                  helperText={
+                    params.password.length > 0 && verifyPassword === params.password
+                      ? "Password Matches"
+                      : " "
+                  }
                 />
                 <PasswordCheck
                   password={params.password}
@@ -237,7 +253,7 @@ const Signup = () => {
                   variant="contained"
                   onClick={handleSignup}
                   endIcon={SignupLoad ? <CircularProgress color="inherit" size={12} /> : null}
-                  disabled={SignupLoad || !passwordCheck}
+                  disabled={SignupLoad}
                 >
                   Signup
                 </Button>

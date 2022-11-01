@@ -74,24 +74,44 @@ const Login = () => {
 
   // check if mail is valid & password is not empty
   const preCheck = () => {
-    return validMail && params.password.length;
+    // iiitl domain not checked
+    setEmailError(false);
+    setPasswordError(false);
+    return params.password.length;
   };
 
   const handleLogin = () => {
+    setLoginLoad(true);
     if (preCheck()) {
-      const LoginURL = "";
+      const LoginURL = "/signIn";
       axios
         .post(LoginURL, params)
         .then((res) => {
           axios.defaults.headers.common["Authorization"] = `Bearer ${res.data.token}`;
+          console.log(res.data);
           setUser({
             authHeader: `Bearer ${res.data.token}`,
             email: params.email,
           });
           navigate("/");
+          setLoginLoad(false);
         })
-        .catch((err) => {});
+        .catch((err) => {
+          err.response.data.errors.map((error) => {
+            if (error.param === "email") {
+              setEmailError(true);
+              setEmailErrorMsg(error.error);
+            }
+            if (error.param === "password") {
+              setPasswordError(true);
+              setpasswordErrorMsg(error.error);
+            }
+            return;
+          });
+          setLoginLoad(false);
+        });
     } else {
+      setLoginLoad(false);
       setOpen(true);
       setDefaultError({
         title: "Fill All Fields",
@@ -179,7 +199,7 @@ const Login = () => {
                   className="Login-btn"
                   variant="contained"
                   onClick={handleLogin}
-                  endIcon={LoginLoad ? <CircularProgress color="inherit" size={15} /> : null}
+                  endIcon={LoginLoad ? <CircularProgress color="inherit" size={12} /> : null}
                   disabled={LoginLoad}
                 >
                   Sign In
@@ -209,7 +229,7 @@ const Login = () => {
           setOpen(false);
         }}
       >
-        <Alert onClose={() => setOpen(false)} severity="error">
+        <Alert onClose={() => setOpen(false)} severity="error" size="small">
           <AlertTitle>
             <strong>{defaultError.title}</strong>
           </AlertTitle>
