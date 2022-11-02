@@ -40,6 +40,17 @@ const Verify = ({ email, password }) => {
       });
   };
 
+  // check roles and redirect accordingly
+  const RedirectWithRoles = (roles) => {
+    if (roles.includes("STUDENT") || roles.includes("PLACEMENT_TEAM")) {
+      navigate("/");
+    } else if (roles.includes("TPO")) {
+      navigate("/tpo");
+    } else {
+      navigate("/register");
+    }
+  };
+
   // Handle Login post verification
   const handleLogin = () => {
     const LoginURL = "/signIn";
@@ -51,8 +62,10 @@ const Verify = ({ email, password }) => {
         setUser({
           authHeader: `Bearer ${res.data.token}`,
           email: email,
+          roles: res.data.roles,
+          name: res.data.name,
         });
-        navigate("/");
+        RedirectWithRoles(res.data.roles);
       })
       .catch((err) => {});
   };

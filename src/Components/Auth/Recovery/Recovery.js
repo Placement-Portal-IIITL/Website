@@ -112,6 +112,17 @@ const Recovery = () => {
       });
   };
 
+  // check roles and redirect accordingly
+  const RedirectWithRoles = (roles) => {
+    if (roles.includes("STUDENT") || roles.includes("PLACEMENT_TEAM")) {
+      navigate("/");
+    } else if (roles.includes("TPO")) {
+      navigate("/tpo");
+    } else {
+      navigate("/register");
+    }
+  };
+
   // login post successfull password update
   const handleLogin = () => {
     const LoginURL = "/signIn";
@@ -123,8 +134,10 @@ const Recovery = () => {
         setUser({
           authHeader: `Bearer ${res.data.token}`,
           email: loginParams.email,
+          roles: res.data.roles,
+          name: res.data.name,
         });
-        navigate("/");
+        RedirectWithRoles(res.data.roles);
       })
       .catch((err) => {});
   };

@@ -80,6 +80,17 @@ const Login = () => {
     return params.password.length;
   };
 
+  // check roles and redirect accordingly
+  const RedirectWithRoles = (roles) => {
+    if (roles.includes("STUDENT") || roles.includes("PLACEMENT_TEAM")) {
+      navigate("/");
+    } else if (roles.includes("TPO")) {
+      navigate("/tpo");
+    } else {
+      navigate("/register");
+    }
+  };
+
   const handleLogin = () => {
     setLoginLoad(true);
     if (preCheck()) {
@@ -88,12 +99,13 @@ const Login = () => {
         .post(LoginURL, params)
         .then((res) => {
           axios.defaults.headers.common["Authorization"] = `Bearer ${res.data.token}`;
-          console.log(res.data);
           setUser({
             authHeader: `Bearer ${res.data.token}`,
             email: params.email,
+            roles: res.data.roles,
+            name: res.data.name,
           });
-          navigate("/");
+          RedirectWithRoles(res.data.roles);
           setLoginLoad(false);
         })
         .catch((err) => {

@@ -12,6 +12,7 @@ import { Menu, MenuItem, Divider, ListItemIcon } from "@mui/material";
 
 // MUI Icons
 import PersonIcon from "@mui/icons-material/Person";
+import RegisterIcon from "@mui/icons-material/HowToReg";
 import TeamIcon from "@mui/icons-material/Workspaces";
 import TpoIcon from "@mui/icons-material/AdminPanelSettings";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -135,9 +136,22 @@ const NavMenu = () => {
           },
         }}
       >
-        <Item Icon={<PersonIcon fontSize="small" />} text="Profile" url="/profile" />
-        <Item Icon={<TeamIcon fontSize="small" />} text="Team Workspace" url="/team" />
-        <Item Icon={<TpoIcon fontSize="small" />} text="TPO Portal" url="/tpo" />
+        {user && user.roles.includes("STUDENT") && (
+          <Item Icon={<PersonIcon fontSize="small" />} text="Profile" url="/profile" />
+        )}
+        {user && user.roles.includes("PLACEMENT_TEAM") && !user.roles.includes("STUDENT") && (
+          <Item
+            Icon={<RegisterIcon fontSize="small" />}
+            text="Register For Placements"
+            url="/register"
+          />
+        )}
+        {user && user.roles.includes("PLACEMENT_TEAM") && (
+          <Item Icon={<TeamIcon fontSize="small" />} text="Team Workspace" url="/team" />
+        )}
+        {user && user.roles.includes("TPO") && (
+          <Item Icon={<TpoIcon fontSize="small" />} text="TPO Portal" url="/tpo" />
+        )}
         {user && <Divider />}
         {user && <LogoutItem Icon={<LogoutIcon fontSize="small" color="error" />} text="Logout" />}
       </Menu>

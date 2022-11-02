@@ -8,7 +8,8 @@ import Login from "../Auth/Login/Login";
 import Recovery from "../Auth/Recovery/Recovery";
 import Signup from "../Auth/Signup/Signup";
 import Profile from "../Profile/Profile";
-
+import Register from "../Profile/Register/RegisterStudent";
+import TPO from "../TPO/TpoDashboard";
 const App = () => {
   return (
     <div className="App">
@@ -28,6 +29,8 @@ const App = () => {
           <Route path="" element={<Profile />} />
           <Route path=":subprofile" element={<Profile />} />
         </Route>
+        <Route path="/register" element={<Register />} />
+        <Route path="/tpo" element={<TPO />} />
       </Routes>
     </div>
   );
