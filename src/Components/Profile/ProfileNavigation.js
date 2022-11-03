@@ -1,11 +1,9 @@
-import { useState } from "react";
-
 // React Router
 import { Link, useParams } from "react-router-dom";
 
 // MUI Components
 import { Stack, Avatar, Typography, Chip } from "@mui/material";
-import { Button, IconButton, Divider } from "@mui/material";
+import { IconButton, Divider } from "@mui/material";
 
 // MUI Icons
 import ManageIcon from "@mui/icons-material/ManageAccounts";
@@ -50,25 +48,17 @@ const ProfileNavigation = () => {
   // calling hooks
   const params = useParams();
 
-  // Profile Nav States
-
-  const [profileData, setProfileData] = useState({});
-
   return (
     <Stack
       sx={{
-        width: 200,
+        width: 300,
         height: "100%",
         padding: "15px 10px",
       }}
       spacing={2}
       alignItems="center"
     >
-      <ProfileAvatar
-        Name="Sample Name"
-        photoURL="images/userImg.png"
-        linkedinURL="https://www.linkedin.com/in/abhishekworks787"
-      />
+      <ProfileAvatar Name="Sample Name" photoURL="/images/userImg.png" linkedinURL="" />
       <Divider flexItem />
       <Item
         url="/profile/manage"

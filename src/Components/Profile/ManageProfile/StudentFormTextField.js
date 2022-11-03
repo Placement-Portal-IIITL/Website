@@ -3,7 +3,7 @@ import { TextField, Typography, MenuItem } from "@mui/material";
 import { InputAdornment, CircularProgress } from "@mui/material";
 
 const onlyNumbers = /^\d+$/;
-const RegisterTextField = (props) => {
+const StudentFormTextField = (props) => {
   const {
     name,
     value,
@@ -17,6 +17,7 @@ const RegisterTextField = (props) => {
     type,
     selectItems,
     loading,
+    editable,
   } = props;
 
   // handle field changes
@@ -53,6 +54,7 @@ const RegisterTextField = (props) => {
           size="small"
           name={name}
           sx={{ minWidth: 300, "& label": { fontFamily: "Nunito" } }}
+          fullWidth
           onChange={handleChange}
           value={value}
           label={isNecessary ? <ColoredAestrik label={label} /> : label}
@@ -60,7 +62,7 @@ const RegisterTextField = (props) => {
           helperText={error ? errorMsg : helpTxt}
           color={value ? "success" : "primary"}
           focused={!!value}
-          disabled={loading}
+          disabled={loading || !editable}
           InputProps={
             loading
               ? {
@@ -96,15 +98,16 @@ const RegisterTextField = (props) => {
           helperText={error ? errorMsg : helpTxt}
           sx={{
             minWidth: 300,
-            maxWidth: 300,
             "& label": { fontFamily: "Nunito" },
             "& p": { fontFamily: "Nunito", fontWeight: 600 },
           }}
+          fullWidth
           focused={!!value}
           color={value ? "success" : "primary"}
+          disabled={!editable}
         />
       )}
     </>
   );
 };
-export default RegisterTextField;
+export default StudentFormTextField;
