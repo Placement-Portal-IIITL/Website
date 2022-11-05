@@ -45,6 +45,7 @@ const EditButton = ({ editable, setEditable }) => {
         color={editable ? "success" : "primary"}
         variant="outlined"
         onClick={handleClick}
+        size="small"
       >
         <Typography sx={{ fontFamily: "Nunito" }}>
           {editable ? "Lock Profile" : "Edit Profile"}
@@ -68,6 +69,7 @@ const StudentUpdateForm = ({ studentProfile }) => {
     phoneNo: "",
     altPhoneNo: "",
     photo: "",
+    linkedin: "",
     isParticipatingInPlacements: true,
   });
   const [department, setDepartment] = useState([]);
@@ -126,7 +128,8 @@ const StudentUpdateForm = ({ studentProfile }) => {
         passingYear: studentProfile.passingYear ? studentProfile.passingYear : "",
         phoneNo: studentProfile.phoneNo ? studentProfile.phoneNo : "",
         altPhoneNo: studentProfile.altPhoneNo ? studentProfile.altPhoneNo : "",
-        photo: studentProfile.photo ? studentProfile.enrollmentNo : "",
+        photo: studentProfile.photo ? studentProfile.photo : "",
+        linkedin: studentProfile.linkedin ? studentProfile.linkedin : "",
         isParticipatingInPlacements: studentProfile.isParticipatingInPlacements
           ? studentProfile.isParticipatingInPlacements
           : true,
@@ -157,11 +160,11 @@ const StudentUpdateForm = ({ studentProfile }) => {
   };
 
   return (
-    <Stack spacing={2} sx={{ width: "100%" }}>
+    <Stack spacing={2} sx={{ width: "100%" }} alignItems="center">
       <StudentPhoto photoURL={formData.photo} name={formData.name} />
       <Chip
         label={studentProfile?.collegeEmail}
-        sx={{ fontFamily: "Nunito" }}
+        sx={{ fontFamily: "Nunito", maxWidth: 400 }}
         color="success"
         variant="outlined"
         icon={<VerifiedIcon color="success" fontSize="small" />}
@@ -285,6 +288,16 @@ const StudentUpdateForm = ({ studentProfile }) => {
           label="Personal Email"
           editable={editable}
           helpTxt="Please provide your personal Email Id"
+        />
+        <StudentFormTextField
+          formData={formData}
+          setFormData={setFormData}
+          name="linkedin"
+          value={formData.linkedin}
+          isNecessary={false}
+          label="Linkedin Profile"
+          editable={editable}
+          helpTxt="Please provide link to your linkedin Profile"
         />
       </Stack>
       <Stack spacing={2} sx={{ width: "100%" }}>

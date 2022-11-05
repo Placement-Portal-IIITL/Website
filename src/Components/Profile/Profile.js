@@ -18,6 +18,7 @@ import { Stack, Divider, Alert, LinearProgress } from "@mui/material";
 import ProfileNav from "./ProfileNavigation";
 import ManageProfile from "./ManageProfile/ManageProfile";
 import Resume from "./Resume/Resume";
+import Documents from "./Documents/Documents";
 
 const Profile = () => {
   // user context
@@ -58,16 +59,15 @@ const Profile = () => {
             <Stack
               direction="row"
               divider={<Divider orientation="vertical" flexItem />}
-              spacing={1}
               sx={{ minHeight: "calc(100vh - 64px)" }}
             >
-              <ProfileNav />
+              <ProfileNav studentProfile={studentProfile} />
               {params.subprofile === "manage" ? (
                 <ManageProfile studentProfile={studentProfile} />
               ) : params.subprofile === "resume" ? (
                 <Resume />
               ) : params.subprofile === "documents" ? (
-                <></>
+                <Documents />
               ) : (
                 <ManageProfile studentProfile={studentProfile} />
               )}

@@ -1,3 +1,6 @@
+// Hooks
+import { useEffect, useState } from "react";
+
 // React Router
 import { Link, useParams } from "react-router-dom";
 
@@ -11,6 +14,13 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import FolderIcon from "@mui/icons-material/Folder";
 import ResumeIcon from "@mui/icons-material/Description";
 
+// create viewable google drive link
+const generateViewURL = (url) => {
+  const prefix = "https://drive.google.com/file/d/";
+  const documentId = url.replace(prefix, "").split("/")[0];
+  return "https://drive.google.com/uc?export=view&id=" + documentId;
+};
+
 const ProfileAvatar = ({ photoURL, Name, linkedinURL }) => {
   // Opening Links
   const OpenLink = () => {
@@ -19,7 +29,7 @@ const ProfileAvatar = ({ photoURL, Name, linkedinURL }) => {
 
   return (
     <Stack spacing={1} justifyContent="center" alignItems="center" sx={{ width: "100%" }}>
-      <Avatar sx={{ width: 56, height: 56 }} alt={Name} src={photoURL} />
+      <Avatar sx={{ width: 56, height: 56 }} alt={Name} src={generateViewURL(photoURL)} />
       <Typography sx={{ fontFamily: "nunito" }} variant="body">
         {Name}
       </Typography>
@@ -44,9 +54,17 @@ const Item = ({ url, Icon, text, active }) => {
   );
 };
 
-const ProfileNavigation = () => {
+const ProfileNavigation = ({ studentProfile }) => {
   // calling hooks
   const params = useParams();
+  const [profile, setProfile] = useState({ photo: "", name: "", linkedin: "" });
+  useEffect(() => {
+    setProfile({
+      photo: studentProfile.photo,
+      name: studentProfile.name,
+      linkedin: studentProfile.linkedin,
+    });
+  }, [studentProfile]);
 
   return (
     <Stack
@@ -58,7 +76,11 @@ const ProfileNavigation = () => {
       spacing={2}
       alignItems="center"
     >
-      <ProfileAvatar Name="Sample Name" photoURL="/images/userImg.png" linkedinURL="" />
+      <ProfileAvatar
+        Name={profile.name}
+        photoURL={profile.photo.length ? profile.photo : "/images/userImg.png"}
+        linkedinURL={profile.linkedin}
+      />
       <Divider flexItem />
       <Item
         url="/profile/manage"

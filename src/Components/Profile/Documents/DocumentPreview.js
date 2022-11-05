@@ -10,7 +10,7 @@ const generateViewURL = (url) => {
   return prefix + documentId + suffix;
 };
 
-const ResumeViewer = ({ url }) => {
+const ResumeViewer = ({ url, docName }) => {
   const [Loading, setLoading] = useState(true);
 
   // update viewer on url updates
@@ -29,7 +29,7 @@ const ResumeViewer = ({ url }) => {
         </Stack>
       ) : (
         <Stack sx={{ padding: "10px 24px", width: "100%" }} spacing={1}>
-          <Chip size="small" label="Preview" />
+          <Chip size="small" label={"Preview " + docName} />
           <iframe
             title="Resume"
             src={generateViewURL(url)}
