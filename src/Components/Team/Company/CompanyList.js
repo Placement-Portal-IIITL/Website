@@ -94,9 +94,9 @@ const CompanyList = () => {
     {
       field: "base",
       headerName: "Base (LPA)",
-      width: 100,
+      width: 150,
       renderCell: (val) => {
-        const res = val.value;
+        const res = val.value || "";
         return (
           <Stack sx={{ whiteSpace: "normal", width: "100%" }} spacing={1}>
             <Stack
@@ -116,9 +116,9 @@ const CompanyList = () => {
     {
       field: "ctc",
       headerName: "CTC (LPA)",
-      width: 100,
+      width: 150,
       renderCell: (val) => {
-        const res = val.value;
+        const res = val.value || "";
         return (
           <Stack sx={{ whiteSpace: "normal", width: "100%" }} spacing={1}>
             <Stack
@@ -138,9 +138,9 @@ const CompanyList = () => {
     {
       field: "stipend",
       headerName: "Stipend (per Month)",
-      width: 150,
+      width: 200,
       renderCell: (val) => {
-        const res = val.value;
+        const res = val.value || "";
         return (
           <Stack sx={{ whiteSpace: "normal", width: "100%" }} spacing={1}>
             <Stack

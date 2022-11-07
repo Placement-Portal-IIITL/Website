@@ -20,6 +20,7 @@ const CompanyFilters = ({ filters, setFilters }) => {
           onChange={handleChange}
           value={value}
         >
+          <MenuItem value={0}>Select</MenuItem>
           {items.map((item) => {
             return (
               <MenuItem key={item.value} value={item.value}>
@@ -61,8 +62,7 @@ const CompanyFilters = ({ filters, setFilters }) => {
         />
         <Filter
           id="minCTC"
-          defaultValue={10}
-          value={filters.minCTC ? filters.minCTC : 10}
+          value={filters.minCTC ? filters.minCTC : 0}
           label="Min CTC (LPA)"
           name="minCTC"
           items={[
@@ -82,8 +82,7 @@ const CompanyFilters = ({ filters, setFilters }) => {
         />
         <Filter
           id="maxCTC"
-          defaultValue={10}
-          value={filters.maxCTC ? filters.maxCTC : 10}
+          value={filters.maxCTC ? filters.maxCTC : 0}
           label="Max CTC (LPA)"
           name="maxCTC"
           items={[
@@ -103,8 +102,7 @@ const CompanyFilters = ({ filters, setFilters }) => {
         />
         <Filter
           id="minBase"
-          defaultValue={10}
-          value={filters.minBase ? filters.minBase : 10}
+          value={filters.minBase ? filters.minBase : 0}
           label="Min Base (LPA)"
           name="minBase"
           items={[
@@ -121,8 +119,7 @@ const CompanyFilters = ({ filters, setFilters }) => {
         />
         <Filter
           id="maxBase"
-          defaultValue={10}
-          value={filters.maxBase ? filters.maxBase : 10}
+          value={filters.maxBase ? filters.maxBase : 0}
           label="Max Base (LPA)"
           name="maxBase"
           items={[
@@ -139,8 +136,7 @@ const CompanyFilters = ({ filters, setFilters }) => {
         />
         <Filter
           id="minStipend"
-          defaultValue={30000}
-          value={filters.minStipend ? filters.minStipend : 30000}
+          value={filters.minStipend ? filters.minStipend : 0}
           label="Min Stipend (per month)"
           name="minStipend"
           items={[
@@ -157,8 +153,7 @@ const CompanyFilters = ({ filters, setFilters }) => {
         />
         <Filter
           id="maxStipend"
-          defaultValue={30000}
-          value={filters.minStipend ? filters.minStipend : 30000}
+          value={filters.minStipend ? filters.minStipend : 0}
           label="Max Stipend (per month)"
           name="maxStipend"
           items={[
