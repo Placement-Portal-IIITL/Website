@@ -67,6 +67,7 @@ const AddCompany = () => {
         })
         .catch((err) => {
           console.log(err.response.data);
+          setScrapperError("Some error Occured!");
           setScrapperLoad(false);
         });
     } else {

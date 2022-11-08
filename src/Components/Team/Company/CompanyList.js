@@ -1,11 +1,15 @@
 import { useState, useEffect } from "react";
 
+// react router
+import { useParams, useNavigate } from "react-router-dom";
+
 // api
 import axios from "../../../axios";
 
 // MUI Components
-import { Box, Stack, Typography, Avatar } from "@mui/material";
+import { Box, Stack, Typography, Avatar, Tooltip } from "@mui/material";
 import { Pagination, IconButton, CircularProgress } from "@mui/material";
+import { TextField, InputAdornment, Button } from "@mui/material";
 
 // MUI-X Components
 import { DataGrid } from "@mui/x-data-grid";
@@ -15,19 +19,29 @@ import UpdateIcon from "@mui/icons-material/Replay";
 import RupeeIcon from "@mui/icons-material/CurrencyRupee";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import WebsiteIcon from "@mui/icons-material/Language";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/DeleteForever";
+import SearchIcon from "@mui/icons-material/Search";
 
 // assets
 import CopyableText from "../../assets/copyText";
 
 // Components
 import CompanyFilters from "./CompanyFilters";
+import DeleteCompany from "./DeleteCompany";
 
 const CompanyList = () => {
+  const params = useParams();
+  const navigate = useNavigate();
+
   // states
+  const [search, setSearch] = useState(params.value || "");
   const [Loading, setLoading] = useState(false);
   const [companylist, setCompanylist] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
-
+  const [open, setOpen] = useState(false);
+  const [company, setCompany] = useState({});
+  const [listChanged, setListChanged] = useState(false);
   const [filters, setFilters] = useState({
     page: 1,
     entriesPerPage: 10,
@@ -35,6 +49,7 @@ const CompanyList = () => {
 
   const getCompanyList = (filters) => {
     setLoading(true);
+    if (params.value) filters = { ...filters, searchQuery: params.value };
     axios
       .get("/getCompanyList", { params: filters })
       .then((res) => {
@@ -49,11 +64,19 @@ const CompanyList = () => {
 
   useEffect(() => {
     getCompanyList(filters);
-  }, [filters]);
+  }, [filters, listChanged]);
+
+  const handleDeleteCompany = (company) => {
+    setCompany(company);
+    setOpen(true);
+  };
 
   const ColTxt = ({ txt }) => {
     return (
-      <Typography sx={{ fontSize: "11px", fontFamily: "Nunito", lineHeight: 0 }} align="justify">
+      <Typography
+        sx={{ fontSize: "11px", fontFamily: "Nunito", lineHeight: "none" }}
+        align="justify"
+      >
         <strong>{txt}</strong>
       </Typography>
     );
@@ -91,9 +114,10 @@ const CompanyList = () => {
         );
       },
     },
+
     {
-      field: "base",
-      headerName: "Base (LPA)",
+      field: "ctc",
+      headerName: "CTC (LPA)",
       width: 150,
       renderCell: (val) => {
         const res = val.value || "";
@@ -114,8 +138,8 @@ const CompanyList = () => {
       },
     },
     {
-      field: "ctc",
-      headerName: "CTC (LPA)",
+      field: "base",
+      headerName: "Base (LPA)",
       width: 150,
       renderCell: (val) => {
         const res = val.value || "";
@@ -212,6 +236,38 @@ const CompanyList = () => {
         );
       },
     },
+    {
+      field: "update",
+      headerName: "Update",
+      sortable: false,
+      width: 80,
+      renderCell: (val) => {
+        const res = val.value;
+        return (
+          <Tooltip title="Update Details" arrow>
+            <IconButton onClick={() => navigate(`/team/company/update/${res}`)} size="small">
+              <EditIcon color="text.secondary" fontSize="small" />
+            </IconButton>
+          </Tooltip>
+        );
+      },
+    },
+    {
+      field: "delete",
+      headerName: "Delete",
+      sortable: false,
+      width: 80,
+      renderCell: (val) => {
+        const res = val.value;
+        return (
+          <Tooltip title="Delete Permanently" arrow>
+            <IconButton onClick={() => handleDeleteCompany(res)} size="small">
+              <DeleteIcon color="error" fontSize="small" />
+            </IconButton>
+          </Tooltip>
+        );
+      },
+    },
   ];
 
   const rows = companylist.map((company) => {
@@ -225,6 +281,8 @@ const CompanyList = () => {
       role: company.natureOfBusiness,
       contact: [{ linkedin: company.linkedIn, website: company.website }],
       remarks: company.remarks,
+      update: company._id,
+      delete: company,
     };
   });
 
@@ -258,7 +316,42 @@ const CompanyList = () => {
   };
 
   return (
-    <Stack spacing={2} justifyContent="center" alignItems="center" sx={{ padding: "15px 12px" }}>
+    <Stack spacing={1} justifyContent="center" alignItems="center" sx={{ padding: "10px" }}>
+      <Stack spacing={1} direction="row" sx={{ width: "100%", maxWidth: 600 }}>
+        <TextField
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon color="text.secondary" fontSize="small" />
+              </InputAdornment>
+            ),
+          }}
+          fullWidth
+          size="small"
+          label="Search"
+          placeholder="Company Name..."
+          value={search}
+          onChange={(e) => {
+            if (e.target.value === "") navigate(`/team/company/list`);
+            setSearch(e.target.value);
+          }}
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              navigate(`/team/company/list/${search}`);
+            }
+          }}
+        />
+        <Button
+          size="small"
+          sx={{ textTransform: "none" }}
+          onClick={(e) => {
+            navigate(`/team/company/list/${search}`);
+          }}
+        >
+          Search
+        </Button>
+      </Stack>
       <CompanyFilters filters={filters} setFilters={setFilters} />
       <Box sx={{ width: "100%" }}>
         <DataGrid
@@ -275,7 +368,6 @@ const CompanyList = () => {
           density="compact"
           headerHeight={48}
           onSortModelChange={(model) => {
-            console.log(model);
             handleSort(model[0].field, model[0].sort);
           }}
         />
@@ -297,6 +389,13 @@ const CompanyList = () => {
           variant="outlined"
         />
       </Stack>
+      <DeleteCompany
+        company={company}
+        setOpen={setOpen}
+        open={open}
+        setCompany={setCompany}
+        setListChanged={setListChanged}
+      />
     </Stack>
   );
 };

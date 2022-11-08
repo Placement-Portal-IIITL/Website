@@ -16,6 +16,7 @@ import SearchIcon from "@mui/icons-material/Search";
 // Profile Components
 import CompanyList from "./CompanyList";
 import AddCompany from "./AddCompany";
+import UpdateCompany from "./UpdateCompany";
 
 const style = { minHeight: 0, fontFamily: "Nunito", textTransform: "none", fontSize: "12px" };
 
@@ -27,8 +28,6 @@ const getValue = (subPanel) => {
       return 1;
     case "update":
       return 2;
-    case "search":
-      return 3;
     default:
       return 0;
   }
@@ -42,8 +41,6 @@ const getsubPanel = (value) => {
       return "add";
     case 2:
       return "update";
-    case 3:
-      return "search";
     default:
       return 0;
   }
@@ -62,8 +59,11 @@ const Company = () => {
   };
 
   useEffect(() => {
-    navigate(`/team/${params.panel}/${getsubPanel(getValue(params.subpanel))}`);
-  }, []);
+    if (params.value)
+      navigate(`/team/${params.panel}/${getsubPanel(getValue(params.subpanel))}/${params.value}`);
+    else navigate(`/team/${params.panel}/${getsubPanel(getValue(params.subpanel))}`);
+    setValue(getValue(params.subpanel));
+  }, [params.subpanel]);
 
   const TabPanel = ({ value, index, element }) => {
     return value === index ? element : null;
@@ -76,12 +76,11 @@ const Company = () => {
           <Tab icon={<ListIcon />} iconPosition="start" label="Company List" sx={style} />
           <Tab icon={<AddIcon />} iconPosition="start" label="Add Company" sx={style} />
           <Tab icon={<UpdateIcon />} iconPosition="start" label="Update Company" sx={style} />
-          <Tab icon={<SearchIcon />} iconPosition="start" label="Search Company" sx={style} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0} element={<CompanyList />} />
       <TabPanel value={value} index={1} element={<AddCompany />} />
-      <TabPanel value={value} index={2} />
+      <TabPanel value={value} index={2} element={<UpdateCompany />} />
     </Box>
   );
 };
