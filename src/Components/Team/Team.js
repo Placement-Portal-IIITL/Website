@@ -14,6 +14,7 @@ import { Stack, Divider, Alert, LinearProgress } from "@mui/material";
 // Components
 import TeamNav from "./TeamNavigation";
 import Company from "./Company/Company";
+import Recruiter from "./Recruiter/Recruiter";
 
 const Team = () => {
   // user context
@@ -58,7 +59,11 @@ const Team = () => {
               sx={{ minHeight: "calc(100vh - 64px)" }}
             >
               <TeamNav studentProfile={studentProfile} />
-              {params.panel === "company" ? <Company /> : null}
+              {params.panel === "company" ? (
+                <Company />
+              ) : params.panel === "recruitment" ? (
+                <Recruiter />
+              ) : null}
             </Stack>
           )}
         </>

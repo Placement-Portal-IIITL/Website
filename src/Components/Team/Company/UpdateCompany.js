@@ -322,7 +322,7 @@ const UpdateCompany = () => {
               value={formData.remarks}
               label="Remarks"
               placeholder="eg : Hiring this year"
-              helperText="Any Remarks Regarding Companry"
+              helperText="Any Remarks Regarding Company"
             />
           </Stack>
           <Divider orientation="horizontal" flexItem />
