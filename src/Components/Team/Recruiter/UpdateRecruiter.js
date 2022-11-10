@@ -74,7 +74,7 @@ const UpdateRecruiter = () => {
           },
         })
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           // fetch recruiter company Name
           if (res.data.companyId) getCompanyName(res.data.companyId);
           setFormData(() => {
@@ -131,7 +131,6 @@ const UpdateRecruiter = () => {
         })
         .then((res) => {
           setScrapperLoad(false);
-          console.log(res.data);
           setFormData({
             ...formData,
             firstName: res.data.firstName || formData.firstName,
@@ -143,7 +142,7 @@ const UpdateRecruiter = () => {
           setScrapperExtraDetails({ title: res.data.title, company: res.data.company });
         })
         .catch((err) => {
-          console.log(err.response.data);
+          // console.log(err.response.data);
           setScrapperError("Some error occured!");
           setScrapperLoad(false);
         });
@@ -163,7 +162,7 @@ const UpdateRecruiter = () => {
       .catch((err) => {
         setUpdateRecruiterLoad(false);
         if (err.response.data.errors) setErrors(err.response.data.errors);
-        console.log(err.response.data);
+        // console.log(err.response.data);
       });
   };
 
@@ -191,7 +190,7 @@ const UpdateRecruiter = () => {
         },
       })
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setCompanyListLoad(false);
         setOpenCompanyList(true);
         setCompanies(res.data.searchResults);
@@ -442,6 +441,7 @@ const UpdateRecruiter = () => {
                   {companies &&
                     companies.map((company) => (
                       <MenuItem
+                        key={company._id}
                         value={company._id}
                         name="companyId"
                         onClick={() => {

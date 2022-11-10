@@ -14,8 +14,8 @@ import UpdateIcon from "@mui/icons-material/Upgrade";
 
 // Profile Components
 import RecruiterList from "./RecruiterList";
-// import AddCompany from "./AddCompany";
 import UpdateRecruiter from "./UpdateRecruiter";
+import AddRecruiter from "./AddRecruiter";
 
 const style = { minHeight: 0, fontFamily: "Nunito", textTransform: "none", fontSize: "12px" };
 
@@ -78,7 +78,7 @@ const Recruiter = () => {
         </Tabs>
       </Box>
       <TabPanel value={value} index={0} element={<RecruiterList />} />
-      {/* <TabPanel value={value} index={1} element={<AddCompany />} /> */}
+      <TabPanel value={value} index={1} element={<AddRecruiter />} />
       <TabPanel value={value} index={2} element={<UpdateRecruiter />} />
     </Box>
   );

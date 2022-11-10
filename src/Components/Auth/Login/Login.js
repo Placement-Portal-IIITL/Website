@@ -1,5 +1,5 @@
 // Hooks
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../../../Context/userContext";
 
@@ -42,6 +42,11 @@ const Login = () => {
 
   // User Context
   const [user, setUser] = useContext(UserContext);
+
+  // redirect if already logged in
+  useEffect(() => {
+    if (user) navigate("/");
+  }, []);
 
   // Login Data States
   const [params, setParams] = useState({ email: "", password: "" });

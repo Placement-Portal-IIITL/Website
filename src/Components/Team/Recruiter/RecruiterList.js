@@ -16,18 +16,18 @@ import { DataGrid } from "@mui/x-data-grid";
 
 // MUI Icons
 import UpdateIcon from "@mui/icons-material/Replay";
-import RupeeIcon from "@mui/icons-material/CurrencyRupee";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import WebsiteIcon from "@mui/icons-material/Language";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/DeleteForever";
 import SearchIcon from "@mui/icons-material/Search";
+import MoreIcon from "@mui/icons-material/MoreVert";
 
 // assets
 import CopyableText from "../../assets/copyText";
 
 // Components
-// import DeleteCompany from "./DeleteCompany";
+import DeleteRecruiter from "./DeleteRecruiter";
+import RecruiterDetails from "./RecruiterDetails";
 
 const RecruiterList = () => {
   const params = useParams();
@@ -44,7 +44,8 @@ const RecruiterList = () => {
   const [recruiterList, setRecruiterList] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
   const [open, setOpen] = useState(false);
-  const [company, setCompany] = useState({});
+  const [recruiter, setRecruiter] = useState({});
+  const [opencontact, setOpenContact] = useState(false);
   const [listChanged, setListChanged] = useState(false);
   const [filters, setFilters] = useState({
     page: 1,
@@ -54,10 +55,14 @@ const RecruiterList = () => {
   const getRecruiterList = (filters) => {
     setLoading(true);
     // if (params.value) filters = { ...filters, : params.value };
+    if (params.value?.split("=")[0] === "search")
+      filters = { ...filters, searchQuery: params.value?.split("=")[1] };
+    else if (params.value?.split("=")[0] === "companyId")
+      filters = { ...filters, companyId: params.value?.split("=")[1] };
+
     axios
       .get("/getRecruiterList", { params: filters })
       .then((res) => {
-        console.log(res.data.data);
         setRecruiterList(res.data.data);
         setTotalPages(res.data.pageCount);
         setLoading(false);
@@ -71,8 +76,8 @@ const RecruiterList = () => {
     getRecruiterList(filters);
   }, [filters, listChanged]);
 
-  const handleDeleteCompany = (company) => {
-    setCompany(company);
+  const handleDeleteCompany = (recruiter) => {
+    setRecruiter(recruiter);
     setOpen(true);
   };
 
@@ -155,6 +160,27 @@ const RecruiterList = () => {
       },
     },
     {
+      field: "contact",
+      headerName: "Contact",
+      sortable: false,
+      width: 100,
+      renderCell: (val) => {
+        const res = val.value;
+        return (
+          <Tooltip title="View Contact Details" arrow>
+            <IconButton
+              onClick={() => {
+                setOpenContact(true);
+                setRecruiter(res);
+              }}
+            >
+              <MoreIcon />
+            </IconButton>
+          </Tooltip>
+        );
+      },
+    },
+    {
       field: "remarks",
       headerName: "Remarks",
       sortable: false,
@@ -216,6 +242,7 @@ const RecruiterList = () => {
       designation: recruiter.designation,
       linkedIn: recruiter.linkedIn,
       remarks: recruiter.remarks,
+      contact: recruiter,
       update: recruiter._id,
       delete: recruiter,
     };
@@ -328,13 +355,13 @@ const RecruiterList = () => {
           variant="outlined"
         />
       </Stack>
-      {/* <DeleteCompany
-        company={company}
+      <DeleteRecruiter
+        recruiter={recruiter}
         setOpen={setOpen}
         open={open}
-        setCompany={setCompany}
         setListChanged={setListChanged}
-      /> */}
+      />
+      <RecruiterDetails recruiter={recruiter} open={opencontact} setOpen={setOpenContact} />
     </Stack>
   );
 };
