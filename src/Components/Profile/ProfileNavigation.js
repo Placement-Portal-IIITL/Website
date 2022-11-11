@@ -78,7 +78,7 @@ const ProfileNavigation = ({ studentProfile }) => {
     >
       <ProfileAvatar
         Name={profile.name}
-        photoURL={profile.photo.length ? profile.photo : "/images/userImg.png"}
+        photoURL={profile?.photo?.length ? profile.photo : "/images/userImg.png"}
         linkedinURL={profile.linkedin}
       />
       <Divider flexItem />

@@ -5,9 +5,9 @@ import { useState, useEffect } from "react";
 import axios from "../../../axios";
 
 // MUI Components
-import { Stack, Button, Alert, Snackbar } from "@mui/material";
-import { Chip, Typography, CircularProgress } from "@mui/material";
-
+import { Stack, Button, Alert, Snackbar, TextField } from "@mui/material";
+import { Chip, Typography, CircularProgress, Grid } from "@mui/material";
+import { FormControl, Select, InputLabel, MenuItem } from "@mui/material";
 // MUI Icons
 import EditIcon from "@mui/icons-material/Edit";
 import VerifiedIcon from "@mui/icons-material/Verified";
@@ -71,6 +71,10 @@ const StudentUpdateForm = ({ studentProfile }) => {
     photo: "",
     linkedin: "",
     isParticipatingInPlacements: true,
+    graduationGrades: {},
+    cgpaGrades: {},
+    highSchoolGrades: {},
+    intermediateGrades: {},
   });
   const [department, setDepartment] = useState([]);
   const [course, setCourse] = useState([]);
@@ -78,6 +82,77 @@ const StudentUpdateForm = ({ studentProfile }) => {
   const [courseLoad, setCourseLoad] = useState(false);
   const [updateLoad, setUpdateLoad] = useState(false);
   const [open, setOpen] = useState(false);
+
+  // education details states
+  const sems = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  const [cgpagrades, setCGPAGrades] = useState({
+    semester1: formData?.cgpaGrades?.semester1 || 0,
+    semester2: formData?.cgpaGrades?.semester2 || 0,
+    semester3: formData?.cgpaGrades?.semester3 || 0,
+    semester4: formData?.cgpaGrades?.semester4 || 0,
+    semester5: formData?.cgpaGrades?.semester5 || 0,
+    semester6: formData?.cgpaGrades?.semester6 || 0,
+    semester7: formData?.cgpaGrades?.semester7 || 0,
+    semester8: formData?.cgpaGrades?.semester8 || 0,
+    semester9: formData?.cgpaGrades?.semester9 || 0,
+    semester10: formData?.cgpaGrades?.semester10 || 0,
+  });
+  const [graduationgrades, setGraduationgrades] = useState({
+    grade: formData?.graduationGrades?.grade || 0,
+    gradeType: formData?.graduationGrades?.gradeType || "",
+  });
+  const [highSchoolgrades, setHighSchoolgrades] = useState({
+    grade: formData?.highSchoolGrades?.grade || 0,
+    gradeType: formData?.highSchoolGrades?.gradeType || "",
+  });
+  const [intermediategrades, setIntermediategrades] = useState({
+    grade: formData?.intermediateGrades?.grade || 0,
+    gradeType: formData?.intermediateGrades?.gradeType || "",
+  });
+
+  const handlecgpaGradesChange = (e) => {
+    setCGPAGrades({ ...cgpagrades, [e.target.name]: e.target.value });
+    setFormData({
+      ...formData,
+      cgpaGrades: {
+        ...formData.cgpaGrades,
+        [e.target.name]: Number(e.target.value),
+      },
+    });
+  };
+
+  // handle field change
+  const handleGraduationGradesChange = (e) => {
+    setGraduationgrades({ ...graduationgrades, [e.target.name]: e.target.value });
+    setFormData({
+      ...formData,
+      graduationGrades: {
+        ...formData.graduationGrades,
+        [e.target.name]: Number(e.target.value),
+      },
+    });
+  };
+
+  const handlehighSchoolgradeChange = (e) => {
+    setHighSchoolgrades({ ...highSchoolgrades, [e.target.name]: e.target.value });
+    setFormData({
+      ...formData,
+      highSchoolGrades: {
+        ...formData.highSchoolGrades,
+        [e.target.name]: Number(e.target.value),
+      },
+    });
+  };
+  const handleIntermediategradeChange = (e) => {
+    setIntermediategrades({ ...intermediategrades, [e.target.name]: e.target.value });
+    setFormData({
+      ...formData,
+      intermediateGrades: {
+        ...formData.intermediateGrades,
+        [e.target.name]: Number(e.target.value),
+      },
+    });
+  };
 
   useEffect(() => {
     setCourseLoad(true);
@@ -119,26 +194,51 @@ const StudentUpdateForm = ({ studentProfile }) => {
   useEffect(() => {
     if (studentProfile) {
       setFormData({
-        name: studentProfile.name ? studentProfile.name : "",
-        gender: studentProfile.gender ? studentProfile.gender : "",
-        personalEmail: studentProfile.personalEmail ? studentProfile.personalEmail : "",
-        enrollmentNo: studentProfile.enrollmentNo ? studentProfile.enrollmentNo : "",
-        courseId: studentProfile.courseId ? studentProfile.courseId : "",
-        departmentId: studentProfile.departmentId ? studentProfile.departmentId : "",
-        passingYear: studentProfile.passingYear ? studentProfile.passingYear : "",
-        phoneNo: studentProfile.phoneNo ? studentProfile.phoneNo : "",
-        altPhoneNo: studentProfile.altPhoneNo ? studentProfile.altPhoneNo : "",
-        photo: studentProfile.photo ? studentProfile.photo : "",
-        linkedin: studentProfile.linkedin ? studentProfile.linkedin : "",
-        isParticipatingInPlacements: studentProfile.isParticipatingInPlacements
-          ? studentProfile.isParticipatingInPlacements
-          : true,
+        name: studentProfile.name || "",
+        gender: studentProfile.gender || "",
+        personalEmail: studentProfile.personalEmail || "",
+        enrollmentNo: studentProfile.enrollmentNo || "",
+        courseId: studentProfile.courseId || "",
+        departmentId: studentProfile.departmentId || "",
+        passingYear: studentProfile.passingYear || "",
+        phoneNo: studentProfile.phoneNo || "",
+        altPhoneNo: studentProfile.altPhoneNo || "",
+        photo: studentProfile.photo || "",
+        linkedin: studentProfile.linkedin || "",
+        graduationGrades: studentProfile.graduationGrades || {},
+        cgpaGrades: studentProfile.cgpaGrades || {},
+        intermediateGrades: studentProfile.intermediateGrades || {},
+        highSchoolGrades: studentProfile.highSchoolGrades || {},
+        isParticipatingInPlacements: studentProfile.isParticipatingInPlacements || true,
+      });
+      setCGPAGrades({
+        semester1: studentProfile?.cgpaGrades?.semester1 || 0,
+        semester2: studentProfile?.cgpaGrades?.semester2 || 0,
+        semester3: studentProfile?.cgpaGrades?.semester3 || 0,
+        semester4: studentProfile?.cgpaGrades?.semester4 || 0,
+        semester5: studentProfile?.cgpaGrades?.semester5 || 0,
+        semester6: studentProfile?.cgpaGrades?.semester6 || 0,
+        semester7: studentProfile?.cgpaGrades?.semester7 || 0,
+        semester8: studentProfile?.cgpaGrades?.semester8 || 0,
+        semester9: studentProfile?.cgpaGrades?.semester9 || 0,
+        semester10: studentProfile?.cgpaGrades?.semester10 || 0,
+      });
+      setGraduationgrades({
+        grade: studentProfile?.graduationGrades?.grade || 0,
+        gradeType: studentProfile?.graduationGrades?.gradeType || "",
+      });
+      setHighSchoolgrades({
+        grade: studentProfile?.highSchoolGrades?.grade || 0,
+        gradeType: studentProfile?.highSchoolGrades?.gradeType || "",
+      });
+      setIntermediategrades({
+        grade: studentProfile?.intermediateGrades?.grade || 0,
+        gradeType: studentProfile?.intermediateGrades?.gradeType || "",
       });
     }
   }, [studentProfile]);
 
   const handleUpdateProfile = () => {
-    console.log(formData);
     setUpdateLoad(true);
     axios
       .post("/updateStudentProfile", formData)
@@ -252,6 +352,120 @@ const StudentUpdateForm = ({ studentProfile }) => {
           editable={editable}
           selectItems={getPassingYears()}
         />
+      </Stack>
+      <Stack spacing={2} sx={{ width: "100%" }}>
+        <Typography variant="h5" color="text.secondary" sx={{ fontFamily: "Nunito" }}>
+          Education Details
+        </Typography>
+        <Typography variant="body1" color="text.secondary">
+          Semester Grades
+        </Typography>
+        <Grid container spacing={1}>
+          {sems.map((sem) => (
+            <Grid item key={sem}>
+              <TextField
+                size="small"
+                name={`semester${sem}`}
+                value={cgpagrades?.[`semester${sem}`]}
+                onChange={handlecgpaGradesChange}
+                disabled={!editable}
+                label={`Grade Obtained in Semester-${sem}`}
+                variant="standard"
+                type="number"
+              />
+            </Grid>
+          ))}
+        </Grid>
+        <Typography variant="body1" color="text.secondary">
+          High School Details
+        </Typography>
+        <Stack direction="row" spacing={2} alignItems="center">
+          <FormControl sx={{ minWidth: 300 }} size="small" disabled={!editable} variant="standard">
+            <InputLabel htmlFor="highschoolGrades">High School (Class 10)</InputLabel>
+            <Select
+              id="highschoolGrades"
+              label="High School Grade Type"
+              name="gradeType"
+              onChange={handlehighSchoolgradeChange}
+              value={highSchoolgrades.gradeType}
+              size="small"
+            >
+              <MenuItem value="">Select</MenuItem>
+              <MenuItem value="PERCENTAGE">Percentage</MenuItem>
+              <MenuItem value="CGPA">CGPA</MenuItem>
+            </Select>
+          </FormControl>
+          <TextField
+            size="small"
+            name="grade"
+            value={highSchoolgrades.grade}
+            onChange={handlehighSchoolgradeChange}
+            disabled={!editable}
+            label="Enter Number Only"
+            variant="standard"
+            type="number"
+          />
+        </Stack>
+        <Typography variant="body1" color="text.secondary">
+          Intermediate Details
+        </Typography>
+        <Stack direction="row" spacing={2} alignItems="center">
+          <FormControl sx={{ minWidth: 300 }} size="small" disabled={!editable} variant="standard">
+            <InputLabel htmlFor="intermediateGrades">Intermediate (Class 12)</InputLabel>
+            <Select
+              id="intermediateGrades"
+              label="Intermediate Grade Type"
+              name="gradeType"
+              onChange={handleIntermediategradeChange}
+              value={intermediategrades.gradeType}
+              size="small"
+            >
+              <MenuItem value="">Select</MenuItem>
+              <MenuItem value="PERCENTAGE">Percentage</MenuItem>
+              <MenuItem value="CGPA">CGPA</MenuItem>
+            </Select>
+          </FormControl>
+          <TextField
+            size="small"
+            name="grade"
+            value={intermediategrades.grade}
+            onChange={handleIntermediategradeChange}
+            disabled={!editable}
+            label="Enter Number Only"
+            variant="standard"
+            type="number"
+          />
+        </Stack>
+        <Typography variant="body1" color="text.secondary">
+          Graduation Details (Post Graduates Only)
+        </Typography>
+        <Stack direction="row" spacing={2} alignItems="center">
+          <FormControl sx={{ minWidth: 300 }} size="small" disabled={!editable} variant="standard">
+            <InputLabel htmlFor="graduationGrades">Graduation Grades (M.Tech Only)</InputLabel>
+            <Select
+              id="graduationGrades"
+              label="Graduation Grades (M.Tech Only)"
+              name="gradeType"
+              onChange={handleGraduationGradesChange}
+              value={graduationgrades.gradeType}
+              size="small"
+            >
+              <MenuItem value="">Select</MenuItem>
+              <MenuItem value="PERCENTAGE">Percentage</MenuItem>
+              <MenuItem value="CGPA">CGPA</MenuItem>
+            </Select>
+          </FormControl>
+          <TextField
+            size="small"
+            name="grade"
+            value={graduationgrades.grade}
+            onChange={handleGraduationGradesChange}
+            disabled={!editable}
+            label="Enter Number Only"
+            variant="standard"
+            type="number"
+          />
+        </Stack>
       </Stack>
       <Stack spacing={2} sx={{ width: "100%" }}>
         <Typography variant="h5" color="text.secondary" sx={{ fontFamily: "Nunito" }}>
