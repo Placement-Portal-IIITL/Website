@@ -4,6 +4,9 @@ import { useState, useEffect } from "react";
 // api
 import axios from "../../../axios";
 
+// react router
+import { useParams } from "react-router-dom";
+
 // MUI Components
 import { Stack, Button, Alert, Snackbar, TextField } from "@mui/material";
 import { Chip, Typography, CircularProgress, Grid } from "@mui/material";
@@ -14,8 +17,8 @@ import VerifiedIcon from "@mui/icons-material/Verified";
 import UpdateIcon from "@mui/icons-material/Upgrade";
 
 // Components
-import StudentPhoto from "./StudentPhoto";
-import StudentFormTextField from "./StudentFormTextField";
+import StudentPhoto from "../../Profile/ManageProfile/StudentPhoto";
+import StudentFormTextField from "../../Profile/ManageProfile/StudentFormTextField";
 
 // returns passing years
 const getPassingYears = () => {
@@ -55,7 +58,25 @@ const EditButton = ({ editable, setEditable }) => {
   );
 };
 
-const StudentUpdateForm = ({ studentProfile }) => {
+const StudentDetails = () => {
+  // params
+  const params = useParams();
+
+  const [studentProfile, setStudentProfile] = useState({});
+
+  useEffect(() => {
+    axios
+      .get("/getStudentProfile", {
+        params: {
+          studentId: params.value,
+        },
+      })
+      .then((res) => {
+        setStudentProfile(res.data);
+      })
+      .catch((err) => {});
+  }, []);
+
   // form states
   const [editable, setEditable] = useState(false);
   const [formData, setFormData] = useState({
@@ -241,7 +262,7 @@ const StudentUpdateForm = ({ studentProfile }) => {
   const handleUpdateProfile = () => {
     setUpdateLoad(true);
     axios
-      .post("/updateStudentProfile", formData)
+      .post("/updateStudentProfile", { ...formData, studentId: params.value })
       .then((res) => {
         setOpen(true);
         setUpdateLoad(false);
@@ -258,7 +279,7 @@ const StudentUpdateForm = ({ studentProfile }) => {
   };
 
   return (
-    <Stack spacing={2} sx={{ width: "100%" }} alignItems="center">
+    <Stack spacing={2} sx={{ width: "100%", padding: "15px 24px" }} alignItems="center">
       <StudentPhoto photoURL={formData.photo} name={formData.name} />
       <Chip
         label={studentProfile?.collegeEmail}
@@ -549,4 +570,4 @@ const StudentUpdateForm = ({ studentProfile }) => {
   );
 };
 
-export default StudentUpdateForm;
+export default StudentDetails;

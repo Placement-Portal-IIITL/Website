@@ -261,6 +261,27 @@ const StudentList = () => {
         );
       },
     },
+    {
+      field: "update",
+      headerName: "Update",
+      sortable: false,
+      width: 120,
+      renderCell: (val) => {
+        const res = val.value;
+        return (
+          <Stack sx={{ whiteSpace: "normal", width: "100%" }} spacing={1}>
+            <Button
+              onClick={() => navigate(`/team/student/details/${res}`)}
+              size="small"
+              sx={{ textTransform: "none" }}
+              variant="outlined"
+            >
+              Update
+            </Button>
+          </Stack>
+        );
+      },
+    },
   ];
 
   const rows = studentList.map((student) => {
@@ -286,6 +307,7 @@ const StudentList = () => {
       ],
       contact: [{ phoneNo: student.phoneNo, altPhoneNo: student.altPhoneNo }],
       resume: student.resumeLink,
+      update: student._id,
     };
   });
 

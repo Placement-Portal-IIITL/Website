@@ -9,12 +9,12 @@ import { Box, Tabs, Tab } from "@mui/material";
 
 // MUI Icons
 import ListIcon from "@mui/icons-material/List";
-// import AddIcon from "@mui/icons-material/Add";
+import DetailsIcon from "@mui/icons-material/ManageAccounts";
 // import UpdateIcon from "@mui/icons-material/Upgrade";
 
 // Profile Components
 import StudentList from "./StudentList";
-// import UpdateRecruiter from "./UpdateRecruiter";
+import StudentDetails from "./StudentDetails";
 // import AddRecruiter from "./AddRecruiter";
 
 const style = { minHeight: 0, fontFamily: "Nunito", textTransform: "none", fontSize: "12px" };
@@ -23,7 +23,7 @@ const getValue = (subPanel) => {
   switch (subPanel) {
     case "list":
       return 0;
-    case "add":
+    case "details":
       return 1;
     case "update":
       return 2;
@@ -37,7 +37,7 @@ const getsubPanel = (value) => {
     case 0:
       return "list";
     case 1:
-      return "add";
+      return "details";
     case 2:
       return "update";
     default:
@@ -73,13 +73,13 @@ const Student = () => {
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs value={value} onChange={handleChange}>
           <Tab icon={<ListIcon />} iconPosition="start" label="Student List" sx={style} />
-          {/* <Tab icon={<AddIcon />} iconPosition="start" label="Add Recruiter" sx={style} />
-          <Tab icon={<UpdateIcon />} iconPosition="start" label="Update Recruiter" sx={style} /> */}
+          <Tab icon={<DetailsIcon />} iconPosition="start" label="Student Details" sx={style} />
+          {/* <Tab icon={<UpdateIcon />} iconPosition="start" label="Update Recruiter" sx={style} /> */}
         </Tabs>
       </Box>
       <TabPanel value={value} index={0} element={<StudentList />} />
-      {/* <TabPanel value={value} index={1} element={<AddRecruiter />} />
-      <TabPanel value={value} index={2} element={<UpdateRecruiter />} /> */}
+      <TabPanel value={value} index={1} element={<StudentDetails />} />
+      {/* <TabPanel value={value} index={2} element={<UpdateRecruiter />} /> */}
     </Box>
   );
 };
