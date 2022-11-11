@@ -104,7 +104,7 @@ const CustomTextField = ({
   // handle value update
   const handleUpdate = (url, params) => {
     setUpdating(true);
-    console.log(params);
+    // console.log(params);
     axios
       .post(url, params)
       .then((res) => {
@@ -320,7 +320,7 @@ const RecruiterDetails = ({ recruiter, open, setOpen }) => {
         },
       })
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setMails(res.data);
         getRecruiterPhoneNo();
       })
@@ -338,7 +338,7 @@ const RecruiterDetails = ({ recruiter, open, setOpen }) => {
         },
       })
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setPhoneNos(res.data);
         setLoading(false);
       })

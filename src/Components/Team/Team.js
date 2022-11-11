@@ -15,6 +15,7 @@ import { Stack, Divider, Alert, LinearProgress } from "@mui/material";
 import TeamNav from "./TeamNavigation";
 import Company from "./Company/Company";
 import Recruiter from "./Recruiter/Recruiter";
+import Student from "./Student/Student";
 
 const Team = () => {
   // user context
@@ -63,6 +64,8 @@ const Team = () => {
                 <Company />
               ) : params.panel === "recruitment" ? (
                 <Recruiter />
+              ) : params.panel === "student" ? (
+                <Student />
               ) : null}
             </Stack>
           )}
