@@ -11,6 +11,8 @@ import Profile from "../Profile/Profile";
 import Register from "../Profile/Register/RegisterStudent";
 import Team from "../Team/Team";
 import TPO from "../TPO/TpoDashboard";
+import Contact from "../Contact/Contact";
+
 const App = () => {
   return (
     <div className="App">
@@ -47,6 +49,10 @@ const App = () => {
         </Route>
         {/* TPO Portal */}
         <Route path="/tpo" element={<TPO />} />
+        <Route path="/contact">
+          <Route path="" element={<Contact />} />
+          <Route path=":panel" element={<Contact />} />
+        </Route>
       </Routes>
     </div>
   );

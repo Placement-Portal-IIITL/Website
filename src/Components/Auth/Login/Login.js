@@ -79,10 +79,9 @@ const Login = () => {
 
   // check if mail is valid & password is not empty
   const preCheck = () => {
-    // iiitl domain not checked
     setEmailError(false);
     setPasswordError(false);
-    return params.password.length;
+    return params.password.length && checkEmail(params.email);
   };
 
   // check roles and redirect accordingly

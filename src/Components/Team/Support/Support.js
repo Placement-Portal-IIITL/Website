@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { UserContext } from "../../Context/userContext";
+import { UserContext } from "../../../Context/userContext";
 
 // react router
 import { useParams } from "react-router-dom";
@@ -8,17 +8,15 @@ import { useParams } from "react-router-dom";
 import { Stack, Divider, Typography, Alert } from "@mui/material";
 
 // components
-import ContactNav from "./ContactNav";
-import ContactForm from "./ContactForm";
-import ContactQueries from "./ContactQueries";
+import SupportQueries from "./SupportQueries";
 
-const Contact = () => {
+const Support = () => {
   const params = useParams();
   const [user] = useContext(UserContext);
 
   return (
     <>
-      {user ? (
+      {user && user.roles.includes("PLACEMENT_TEAM") ? (
         <Stack
           spacing={2}
           divider={<Divider flexItem orientation="horizontal" />}
@@ -30,16 +28,15 @@ const Contact = () => {
             color="text.secondary"
             sx={{ fontFamily: "Nunito" }}
           >
-            Contact Us
+            Support
           </Typography>
           <Stack
             direction="row"
             divider={<Divider flexItem orientation="vertical" />}
             spacing={1}
-            sx={{ width: "100%", flexGrow: 1 }}
+            sx={{ width: "100%", flexGrow: 1, padding: "10px 24px" }}
           >
-            <ContactNav />
-            {params.panel === "addQuery" ? <ContactForm /> : <ContactQueries />}
+            <SupportQueries />
           </Stack>
         </Stack>
       ) : (
@@ -49,4 +46,4 @@ const Contact = () => {
   );
 };
 
-export default Contact;
+export default Support;

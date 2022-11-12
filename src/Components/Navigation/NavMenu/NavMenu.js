@@ -1,7 +1,7 @@
 // hooks
 import React, { useState, useContext } from "react";
 import { UserContext } from "../../../Context/userContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // API
 import axios from "../../../axios";
@@ -16,6 +16,7 @@ import RegisterIcon from "@mui/icons-material/HowToReg";
 import TeamIcon from "@mui/icons-material/Workspaces";
 import TpoIcon from "@mui/icons-material/AdminPanelSettings";
 import LogoutIcon from "@mui/icons-material/Logout";
+import HelpIcon from "@mui/icons-material/HelpCenter";
 
 const UserIcon = () => {
   return (
@@ -31,6 +32,7 @@ const UserIcon = () => {
 const userLocal = "IIITL_Placement_Portal_User";
 
 const NavMenu = () => {
+  const navigate = useNavigate();
   // user context
   const [user, setUser] = useContext(UserContext);
 
@@ -73,6 +75,7 @@ const NavMenu = () => {
           localStorage.removeItem(userLocal);
           delete axios.defaults.headers.common["Authorization"];
           setLogoutLoad(false);
+          navigate("/Login");
         })
         .catch((err) => {});
     };
@@ -138,6 +141,9 @@ const NavMenu = () => {
       >
         {user && user?.roles.includes("STUDENT") && (
           <Item Icon={<PersonIcon fontSize="small" />} text="Profile" url="/profile" />
+        )}
+        {user && user?.roles.includes("STUDENT") && (
+          <Item Icon={<HelpIcon fontSize="small" />} text="Contact" url="/contact" />
         )}
         {user && user?.roles.includes("PLACEMENT_TEAM") && !user.roles.includes("STUDENT") && (
           <Item

@@ -117,209 +117,215 @@ const RegisterStudent = () => {
   };
 
   return (
-    <Stack
-      sx={{ minHeight: "calc(100vh - 64px)", width: "100%", padding: "15px 24px" }}
-      spacing={1}
-      alignItems="center"
-    >
-      <Typography variant="h4" color="text.secondary">
-        Register As Student
-      </Typography>
-      <Alert severity="info" sx={{ padding: "0 10px" }}>
-        <Typography component="span" color="error">
-          *
-        </Typography>
-        &nbsp;Fields are Necessary
-      </Alert>
-      <Stack direction="row" spacing={2} sx={{ width: "100%" }} justifyContent="center">
-        <RegisterTextField
-          formData={formData}
-          setFormData={setFormData}
-          name="name"
-          value={formData.name}
-          label="Full Name"
-          isNecessary={true}
-          helpTxt=" "
-          error={!!errors.find((e) => e.param === "name")}
-          errorMsg={errors.find((e) => e.param === "name")?.error}
-        />
-        <RegisterTextField
-          formData={formData}
-          setFormData={setFormData}
-          name="personalEmail"
-          value={formData.personalEmail}
-          label="Personal Email"
-          isNecessary={true}
-          helpTxt=" "
-          error={!!errors.find((e) => e.param === "personalEmail")}
-          errorMsg={errors.find((e) => e.param === "personalEmail")?.error}
-        />
-        <RegisterTextField
-          formData={formData}
-          setFormData={setFormData}
-          name="gender"
-          type="select"
-          value={formData.gender}
-          label="Gender"
-          isNecessary={true}
-          selectItems={[
-            { label: "Male", value: "Male" },
-            { label: "Female", value: "Female" },
-            { label: "Other", value: "other" },
-          ]}
-          helpTxt=" "
-          error={!!errors.find((e) => e.param === "gender")}
-          errorMsg={errors.find((e) => e.param === "gender")?.error}
-        />
-      </Stack>
-      <Stack direction="row" spacing={2} sx={{ width: "100%" }} justifyContent="center">
-        <RegisterTextField
-          formData={formData}
-          setFormData={setFormData}
-          name="enrollmentNo"
-          value={formData.enrollmentNo}
-          label="Enrollment Number"
-          isNecessary={true}
-          helpTxt=" "
-          error={!!errors.find((e) => e.param === "enrollmentNo")}
-          errorMsg={errors.find((e) => e.param === "enrollmentNo")?.error}
-        />
-        <RegisterTextField
-          formData={formData}
-          setFormData={setFormData}
-          name="courseId"
-          value={formData.courseId}
-          label="Course"
-          isNecessary={true}
-          helpTxt=" "
-          type="select"
-          selectItems={course}
-          loading={courseLoad}
-          error={!!errors.find((e) => e.param === "courseId")}
-          errorMsg={errors.find((e) => e.param === "courseId")?.error}
-        />
-        <RegisterTextField
-          formData={formData}
-          setFormData={setFormData}
-          name="departmentId"
-          value={formData.departmentId}
-          label="Department"
-          isNecessary={true}
-          helpTxt=" "
-          type="select"
-          selectItems={department}
-          loading={departmentLoad}
-          error={!!errors.find((e) => e.param === "departmentId")}
-          errorMsg={errors.find((e) => e.param === "departmentId")?.error}
-        />
-      </Stack>
-      <Stack direction="row" spacing={2} sx={{ width: "100%" }} justifyContent="center">
-        <RegisterTextField
-          formData={formData}
-          setFormData={setFormData}
-          name="phoneNo"
-          value={formData.phoneNo}
-          label="Phone Number"
-          isNecessary={true}
-          helpTxt="eg : 8678912345"
-          type="number/text"
-          error={!!errors.find((e) => e.param === "phoneNo")}
-          errorMsg={errors.find((e) => e.param === "phoneNo")?.error}
-        />
-        <RegisterTextField
-          formData={formData}
-          setFormData={setFormData}
-          name="altPhoneNo"
-          value={formData.altPhoneNo}
-          label="Alternate Phone Number"
-          isNecessary={true}
-          helpTxt="eg : 8678912345"
-          type="number/text"
-          error={!!errors.find((e) => e.param === "altPhoneNo")}
-          errorMsg={errors.find((e) => e.param === "altPhoneNo")?.error}
-        />
-        <RegisterTextField
-          formData={formData}
-          setFormData={setFormData}
-          name="passingYear"
-          value={formData.passingYear}
-          label="Passing Year"
-          isNecessary={true}
-          helpTxt=" "
-          type="select"
-          selectItems={getPassingYears()}
-          error={!!errors.find((e) => e.param === "passingYear")}
-          errorMsg={errors.find((e) => e.param === "passingYear")?.error}
-        />
-      </Stack>
-      <Stack direction="row" spacing={2} sx={{ width: "100%" }} justifyContent="center">
-        <RegisterTextField
-          formData={formData}
-          setFormData={setFormData}
-          name="resumeLink"
-          value={formData.resumeLink}
-          label="Resume Link"
-          helpTxt="Please Provide Google Drive Resume Link with Access to Anyone"
-        />
-        <RegisterTextField
-          formData={formData}
-          setFormData={setFormData}
-          name="linkedin"
-          value={formData.linkedin}
-          label="LinkedIn"
-          helpTxt="LinkedIn Profile Link"
-        />
-        <RegisterTextField
-          formData={formData}
-          setFormData={setFormData}
-          name="photo"
-          value={formData.photo}
-          label="Photo"
-          helpTxt="Please Provide Google Drive Photo Link with Access to Anyone"
-        />
-      </Stack>
-      <Stack direction="row" spacing={2} sx={{ width: "100%" }} justifyContent="center">
-        <RegisterTextField
-          formData={formData}
-          setFormData={setFormData}
-          name="aadhar"
-          value={formData.aadhar}
-          label="Aadhar"
-          helpTxt="Please Provide Google Drive Aadhar Card Photo Link with Access to Anyone"
-        />
-        <RegisterTextField
-          formData={formData}
-          setFormData={setFormData}
-          name="PAN"
-          value={formData.PAN}
-          label="PAN"
-          helpTxt="Please Provide Google Drive PAN Card Photo Link with Access to Anyone"
-        />
-        <RegisterTextField
-          formData={formData}
-          setFormData={setFormData}
-          name="isParticipatingInPlacements"
-          value={formData.isParticipatingInPlacements}
-          label="Participating in Placements"
-          type="select"
-          selectItems={[
-            { label: "YES", value: true },
-            { label: "NO", value: false },
-          ]}
-        />
-      </Stack>
-      <Button
-        variant="outlined"
-        sx={{ width: 300, textTransform: "none" }}
-        color="success"
-        startIcon={<RegisterIcon sx={{ fontSize: "1em !important" }} />}
-        onClick={handleRegister}
-        disabled={registerLoad}
-        endIcon={registerLoad ? <CircularProgress size={12} color="inherit" /> : null}
-      >
-        Register
-      </Button>
-    </Stack>
+    <>
+      {user ? (
+        <Stack
+          sx={{ minHeight: "calc(100vh - 64px)", width: "100%", padding: "15px 24px" }}
+          spacing={1}
+          alignItems="center"
+        >
+          <Typography variant="h4" color="text.secondary">
+            Register As Student
+          </Typography>
+          <Alert severity="info" sx={{ padding: "0 10px" }}>
+            <Typography component="span" color="error">
+              *
+            </Typography>
+            &nbsp;Fields are Necessary
+          </Alert>
+          <Stack direction="row" spacing={2} sx={{ width: "100%" }} justifyContent="center">
+            <RegisterTextField
+              formData={formData}
+              setFormData={setFormData}
+              name="name"
+              value={formData.name}
+              label="Full Name"
+              isNecessary={true}
+              helpTxt=" "
+              error={!!errors.find((e) => e.param === "name")}
+              errorMsg={errors.find((e) => e.param === "name")?.error}
+            />
+            <RegisterTextField
+              formData={formData}
+              setFormData={setFormData}
+              name="personalEmail"
+              value={formData.personalEmail}
+              label="Personal Email"
+              isNecessary={true}
+              helpTxt=" "
+              error={!!errors.find((e) => e.param === "personalEmail")}
+              errorMsg={errors.find((e) => e.param === "personalEmail")?.error}
+            />
+            <RegisterTextField
+              formData={formData}
+              setFormData={setFormData}
+              name="gender"
+              type="select"
+              value={formData.gender}
+              label="Gender"
+              isNecessary={true}
+              selectItems={[
+                { label: "Male", value: "Male" },
+                { label: "Female", value: "Female" },
+                { label: "Other", value: "other" },
+              ]}
+              helpTxt=" "
+              error={!!errors.find((e) => e.param === "gender")}
+              errorMsg={errors.find((e) => e.param === "gender")?.error}
+            />
+          </Stack>
+          <Stack direction="row" spacing={2} sx={{ width: "100%" }} justifyContent="center">
+            <RegisterTextField
+              formData={formData}
+              setFormData={setFormData}
+              name="enrollmentNo"
+              value={formData.enrollmentNo}
+              label="Enrollment Number"
+              isNecessary={true}
+              helpTxt=" "
+              error={!!errors.find((e) => e.param === "enrollmentNo")}
+              errorMsg={errors.find((e) => e.param === "enrollmentNo")?.error}
+            />
+            <RegisterTextField
+              formData={formData}
+              setFormData={setFormData}
+              name="courseId"
+              value={formData.courseId}
+              label="Course"
+              isNecessary={true}
+              helpTxt=" "
+              type="select"
+              selectItems={course}
+              loading={courseLoad}
+              error={!!errors.find((e) => e.param === "courseId")}
+              errorMsg={errors.find((e) => e.param === "courseId")?.error}
+            />
+            <RegisterTextField
+              formData={formData}
+              setFormData={setFormData}
+              name="departmentId"
+              value={formData.departmentId}
+              label="Department"
+              isNecessary={true}
+              helpTxt=" "
+              type="select"
+              selectItems={department}
+              loading={departmentLoad}
+              error={!!errors.find((e) => e.param === "departmentId")}
+              errorMsg={errors.find((e) => e.param === "departmentId")?.error}
+            />
+          </Stack>
+          <Stack direction="row" spacing={2} sx={{ width: "100%" }} justifyContent="center">
+            <RegisterTextField
+              formData={formData}
+              setFormData={setFormData}
+              name="phoneNo"
+              value={formData.phoneNo}
+              label="Phone Number"
+              isNecessary={true}
+              helpTxt="eg : 8678912345"
+              type="number/text"
+              error={!!errors.find((e) => e.param === "phoneNo")}
+              errorMsg={errors.find((e) => e.param === "phoneNo")?.error}
+            />
+            <RegisterTextField
+              formData={formData}
+              setFormData={setFormData}
+              name="altPhoneNo"
+              value={formData.altPhoneNo}
+              label="Alternate Phone Number"
+              isNecessary={true}
+              helpTxt="eg : 8678912345"
+              type="number/text"
+              error={!!errors.find((e) => e.param === "altPhoneNo")}
+              errorMsg={errors.find((e) => e.param === "altPhoneNo")?.error}
+            />
+            <RegisterTextField
+              formData={formData}
+              setFormData={setFormData}
+              name="passingYear"
+              value={formData.passingYear}
+              label="Passing Year"
+              isNecessary={true}
+              helpTxt=" "
+              type="select"
+              selectItems={getPassingYears()}
+              error={!!errors.find((e) => e.param === "passingYear")}
+              errorMsg={errors.find((e) => e.param === "passingYear")?.error}
+            />
+          </Stack>
+          <Stack direction="row" spacing={2} sx={{ width: "100%" }} justifyContent="center">
+            <RegisterTextField
+              formData={formData}
+              setFormData={setFormData}
+              name="resumeLink"
+              value={formData.resumeLink}
+              label="Resume Link"
+              helpTxt="Please Provide Google Drive Resume Link with Access to Anyone"
+            />
+            <RegisterTextField
+              formData={formData}
+              setFormData={setFormData}
+              name="linkedin"
+              value={formData.linkedin}
+              label="LinkedIn"
+              helpTxt="LinkedIn Profile Link"
+            />
+            <RegisterTextField
+              formData={formData}
+              setFormData={setFormData}
+              name="photo"
+              value={formData.photo}
+              label="Photo"
+              helpTxt="Please Provide Google Drive Photo Link with Access to Anyone"
+            />
+          </Stack>
+          <Stack direction="row" spacing={2} sx={{ width: "100%" }} justifyContent="center">
+            <RegisterTextField
+              formData={formData}
+              setFormData={setFormData}
+              name="aadhar"
+              value={formData.aadhar}
+              label="Aadhar"
+              helpTxt="Please Provide Google Drive Aadhar Card Photo Link with Access to Anyone"
+            />
+            <RegisterTextField
+              formData={formData}
+              setFormData={setFormData}
+              name="PAN"
+              value={formData.PAN}
+              label="PAN"
+              helpTxt="Please Provide Google Drive PAN Card Photo Link with Access to Anyone"
+            />
+            <RegisterTextField
+              formData={formData}
+              setFormData={setFormData}
+              name="isParticipatingInPlacements"
+              value={formData.isParticipatingInPlacements}
+              label="Participating in Placements"
+              type="select"
+              selectItems={[
+                { label: "YES", value: true },
+                { label: "NO", value: false },
+              ]}
+            />
+          </Stack>
+          <Button
+            variant="outlined"
+            sx={{ width: 300, textTransform: "none" }}
+            color="success"
+            startIcon={<RegisterIcon sx={{ fontSize: "1em !important" }} />}
+            onClick={handleRegister}
+            disabled={registerLoad}
+            endIcon={registerLoad ? <CircularProgress size={12} color="inherit" /> : null}
+          >
+            Register
+          </Button>
+        </Stack>
+      ) : (
+        <Alert severity="error">Unauthorized Access. Please Login!</Alert>
+      )}
+    </>
   );
 };
 
