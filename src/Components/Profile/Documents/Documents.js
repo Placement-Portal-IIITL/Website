@@ -69,7 +69,7 @@ const Documents = () => {
             <Typography variant="h6" color="text.secondary" sx={{ fontFamily: "Nunito" }}>
               {docName}
             </Typography>
-            {docURL.length ? (
+            {docURL?.length ? (
               <Chip
                 size="small"
                 label="Added"
