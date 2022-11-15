@@ -6,7 +6,7 @@ import { Stack, CircularProgress, Chip } from "@mui/material";
 const generateViewURL = (url) => {
   const prefix = "https://drive.google.com/file/d/";
   const suffix = "/preview";
-  const documentId = url.replace(prefix, "").split("/")[0];
+  const documentId = url?.replace(prefix, "").split("/")[0];
   return prefix + documentId + suffix;
 };
 
