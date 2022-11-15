@@ -84,7 +84,7 @@ const TeamNavigation = ({ studentProfile }) => {
       spacing={2}
       alignItems="center"
     >
-      {profile.photo.length ? (
+      {profile?.photo?.length ? (
         <ProfileAvatar
           Name={profile.name}
           photoURL={profile.photo}
@@ -121,18 +121,18 @@ const TeamNavigation = ({ studentProfile }) => {
         text="Student"
         active={params.panel === "student"}
       />
-      <Item
+      {/* <Item
         url="/team/placements"
         Icon={<ProcessIcon size="small" color="primary" />}
         text="Ongoing Placements"
         active={params.panel === "placements"}
-      />
-      <Item
+      /> */}
+      {/* <Item
         url="/team/statistics"
         Icon={<StatsIcon size="small" color="primary" />}
         text="Placement Stats"
         active={params.panel === "statistics"}
-      />
+      /> */}
       <Item
         url="/team/support"
         Icon={<HelpIcon size="small" color="primary" />}

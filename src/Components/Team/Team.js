@@ -39,7 +39,7 @@ const Team = () => {
       })
       .catch((err) => {
         setLoading(false);
-        console.log(err.response.data);
+        // console.log(err.response.data);
       });
   };
 
