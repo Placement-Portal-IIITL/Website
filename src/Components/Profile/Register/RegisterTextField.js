@@ -6,6 +6,7 @@ const onlyNumbers = /^\d+$/;
 const RegisterTextField = (props) => {
   const {
     name,
+    icon,
     value,
     isNecessary,
     error,
@@ -48,11 +49,14 @@ const RegisterTextField = (props) => {
     <>
       {type === "select" ? (
         <TextField
-          variant="standard"
+          fullWidth
+          variant="outlined"
           select
-          size="small"
           name={name}
-          sx={{ minWidth: 300, "& label": { fontFamily: "Nunito" } }}
+          sx={{
+            minWidth: 300,
+            "& label": { fontFamily: "Nunito" },
+          }}
           onChange={handleChange}
           value={value}
           label={isNecessary ? <ColoredAestrik label={label} /> : label}
@@ -61,17 +65,13 @@ const RegisterTextField = (props) => {
           color={value ? "success" : "primary"}
           focused={!!value}
           disabled={loading}
-          InputProps={
-            loading
-              ? {
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      {loading ? <CircularProgress size={12} color="inherit" /> : null}
-                    </InputAdornment>
-                  ),
-                }
-              : null
-          }
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                {loading ? <CircularProgress size={12} color="inherit" /> : icon}
+              </InputAdornment>
+            ),
+          }}
         >
           <MenuItem key="" value="">
             Select
@@ -85,9 +85,9 @@ const RegisterTextField = (props) => {
         </TextField>
       ) : (
         <TextField
-          variant="standard"
+          fullWidth
+          variant="outlined"
           type="text"
-          size="small"
           name={name}
           onChange={handleChange}
           value={value}
@@ -96,12 +96,15 @@ const RegisterTextField = (props) => {
           helperText={error ? errorMsg : helpTxt}
           sx={{
             minWidth: 300,
-            maxWidth: 300,
             "& label": { fontFamily: "Nunito" },
             "& p": { fontFamily: "Nunito", fontWeight: 600 },
+            "& input": { fontFamily: "Nunito" },
           }}
           focused={!!value}
           color={value ? "success" : "primary"}
+          InputProps={{
+            startAdornment: <InputAdornment position="start">{icon}</InputAdornment>,
+          }}
         />
       )}
     </>

@@ -1,12 +1,8 @@
 // MUI Components
 import { Stack, Avatar } from "@mui/material";
 
-// create viewable google drive link
-const generateViewURL = (url) => {
-  const prefix = "https://drive.google.com/file/d/";
-  const documentId = url.replace(prefix, "").split("/")[0];
-  return "https://drive.google.com/uc?export=view&id=" + documentId;
-};
+// assets
+import generateViewURL from "../../assets/Methods/GenerateGoogleDriveViewURL";
 
 const StudentPhoto = ({ photoURL, name }) => {
   return (

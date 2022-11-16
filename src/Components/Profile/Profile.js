@@ -49,7 +49,7 @@ const Profile = () => {
 
   useEffect(() => {
     getStudentProfile();
-  }, [params.subprofile]);
+  }, []);
 
   return (
     <>

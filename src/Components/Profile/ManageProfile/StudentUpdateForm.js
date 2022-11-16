@@ -6,12 +6,14 @@ import axios from "../../../axios";
 
 // MUI Components
 import { Stack, Button, Alert, Snackbar, TextField } from "@mui/material";
-import { Chip, Typography, CircularProgress, Grid } from "@mui/material";
+import { Chip, Typography, CircularProgress, Grid, Divider } from "@mui/material";
 import { FormControl, Select, InputLabel, MenuItem } from "@mui/material";
+
 // MUI Icons
 import EditIcon from "@mui/icons-material/Edit";
 import VerifiedIcon from "@mui/icons-material/Verified";
 import UpdateIcon from "@mui/icons-material/Upgrade";
+import LockIcon from "@mui/icons-material/Lock";
 
 // Components
 import StudentPhoto from "./StudentPhoto";
@@ -38,9 +40,9 @@ const EditButton = ({ editable, setEditable }) => {
     setEditable((prev) => !prev);
   };
   return (
-    <Stack sx={{ width: "100%" }} alignItems="flex-end">
+    <Stack sx={{ width: "100%", padding: "0px 24px" }} alignItems="flex-end">
       <Button
-        endIcon={<EditIcon />}
+        endIcon={editable ? <LockIcon /> : <EditIcon />}
         sx={{ textTransform: "none" }}
         color={editable ? "success" : "primary"}
         variant="outlined"
@@ -55,7 +57,7 @@ const EditButton = ({ editable, setEditable }) => {
   );
 };
 
-const StudentUpdateForm = ({ studentProfile }) => {
+const StudentUpdateForm = ({ studentProfile, setStudentProfile }) => {
   // form states
   const [editable, setEditable] = useState(false);
   const [formData, setFormData] = useState({
@@ -246,6 +248,9 @@ const StudentUpdateForm = ({ studentProfile }) => {
         setOpen(true);
         setUpdateLoad(false);
         setEditable(false);
+        setStudentProfile((prev) => {
+          return { ...prev, ...formData };
+        });
       })
       .catch((err) => {
         setUpdateLoad(false);
@@ -267,101 +272,110 @@ const StudentUpdateForm = ({ studentProfile }) => {
         variant="outlined"
         icon={<VerifiedIcon color="success" fontSize="small" />}
       />
+      <Divider flexItem />
       <EditButton editable={editable} setEditable={setEditable} />
-      <Stack spacing={2} sx={{ width: "100%" }}>
+      <Divider flexItem />
+      <Stack spacing={2} sx={{ width: "100%", padding: "0px 24px" }}>
         <Typography variant="h5" color="text.secondary" sx={{ fontFamily: "Nunito" }}>
           Student Details
         </Typography>
-        <StudentFormTextField
-          formData={formData}
-          setFormData={setFormData}
-          name="name"
-          value={formData.name}
-          isNecessary={true}
-          label="Name"
-          editable={editable}
-          helpTxt="Your Full Name as per documents"
-        />
-        <StudentFormTextField
-          formData={formData}
-          setFormData={setFormData}
-          name="gender"
-          value={formData.gender}
-          isNecessary={true}
-          label="Gender"
-          editable={editable}
-          helpTxt="Please Specify your Gender"
-          type="select"
-          selectItems={[
-            { label: "Male", value: "Male" },
-            { label: "Female", value: "Female" },
-            { label: "Other", value: "Other" },
-          ]}
-        />
-        <StudentFormTextField
-          formData={formData}
-          setFormData={setFormData}
-          name="enrollmentNo"
-          value={formData.enrollmentNo}
-          isNecessary={true}
-          label="Enrollment Number"
-          editable={editable}
-          helpTxt="Your college enrollment number"
-        />
-        {course.length && (
+
+        <Stack direction="row" spacing={2}>
           <StudentFormTextField
             formData={formData}
             setFormData={setFormData}
-            name="courseId"
-            value={formData.courseId}
-            label="Course"
+            name="name"
+            value={formData.name}
             isNecessary={true}
-            helpTxt="Please Select Your Course"
-            type="select"
-            selectItems={course}
-            loading={courseLoad}
+            label="Name"
             editable={editable}
+            helpTxt="Your Full Name as per documents"
           />
-        )}
-        {department.length && (
           <StudentFormTextField
             formData={formData}
             setFormData={setFormData}
-            name="departmentId"
-            value={formData.departmentId}
-            label="Department"
+            name="enrollmentNo"
+            value={formData.enrollmentNo}
             isNecessary={true}
-            helpTxt="Please Select the Department of your Course"
-            type="select"
-            selectItems={department}
-            loading={departmentLoad}
+            label="Enrollment Number"
             editable={editable}
+            helpTxt="Your college enrollment number"
           />
-        )}
-        <StudentFormTextField
-          formData={formData}
-          setFormData={setFormData}
-          name="passingYear"
-          value={formData.passingYear}
-          label="Passing Year"
-          isNecessary={true}
-          helpTxt="Please Provide your passing year"
-          type="select"
-          editable={editable}
-          selectItems={getPassingYears()}
-        />
+          <StudentFormTextField
+            formData={formData}
+            setFormData={setFormData}
+            name="gender"
+            value={formData.gender}
+            isNecessary={true}
+            label="Gender"
+            editable={editable}
+            helpTxt="Please Specify your Gender"
+            type="select"
+            selectItems={[
+              { label: "Male", value: "Male" },
+              { label: "Female", value: "Female" },
+              { label: "Other", value: "Other" },
+            ]}
+          />
+        </Stack>
+        <Stack direction="row" spacing={2}>
+          {course.length && (
+            <StudentFormTextField
+              formData={formData}
+              setFormData={setFormData}
+              name="courseId"
+              value={formData.courseId}
+              label="Course"
+              isNecessary={true}
+              helpTxt="Please Select Your Course"
+              type="select"
+              selectItems={course}
+              loading={courseLoad}
+              editable={editable}
+            />
+          )}
+          {department.length && (
+            <StudentFormTextField
+              formData={formData}
+              setFormData={setFormData}
+              name="departmentId"
+              value={formData.departmentId}
+              label="Department"
+              isNecessary={true}
+              helpTxt="Please Select the Department of your Course"
+              type="select"
+              selectItems={department}
+              loading={departmentLoad}
+              editable={editable}
+            />
+          )}
+          <StudentFormTextField
+            formData={formData}
+            setFormData={setFormData}
+            name="passingYear"
+            value={formData.passingYear}
+            label="Passing Year"
+            isNecessary={true}
+            helpTxt="Please Provide your passing year"
+            type="select"
+            editable={editable}
+            selectItems={getPassingYears()}
+          />
+        </Stack>
       </Stack>
-      <Stack spacing={2} sx={{ width: "100%" }}>
+      <Divider flexItem />
+      <Stack spacing={2} sx={{ width: "100%", padding: "0px 24px" }}>
         <Typography variant="h5" color="text.secondary" sx={{ fontFamily: "Nunito" }}>
           Education Details
         </Typography>
-        <Typography variant="body1" color="text.secondary">
+        <Typography variant="body1" color="text.secondary" sx={{ fontFamily: "Nunito" }}>
           Semester Grades
         </Typography>
-        <Grid container spacing={1}>
+        <Grid container>
           {sems.map((sem) => (
-            <Grid item key={sem}>
+            <Grid item key={sem} lg={3} md={4} sm={4} xs={6} sx={{ mr: 1, mb: 1 }}>
               <TextField
+                fullWidth
                 size="small"
                 name={`semester${sem}`}
                 value={cgpagrades?.[`semester${sem}`]}
@@ -374,7 +388,7 @@ const StudentUpdateForm = ({ studentProfile }) => {
             </Grid>
           ))}
         </Grid>
-        <Typography variant="body1" color="text.secondary">
+        <Typography variant="body1" color="text.secondary" sx={{ fontFamily: "Nunito" }}>
           High School Details
         </Typography>
         <Stack direction="row" spacing={2} alignItems="center">
@@ -404,7 +418,7 @@ const StudentUpdateForm = ({ studentProfile }) => {
             type="number"
           />
         </Stack>
-        <Typography variant="body1" color="text.secondary">
+        <Typography variant="body1" color="text.secondary" sx={{ fontFamily: "Nunito" }}>
           Intermediate Details
         </Typography>
         <Stack direction="row" spacing={2} alignItems="center">
@@ -434,7 +448,7 @@ const StudentUpdateForm = ({ studentProfile }) => {
             type="number"
           />
         </Stack>
-        <Typography variant="body1" color="text.secondary">
+        <Typography variant="body1" color="text.secondary" sx={{ fontFamily: "Nunito" }}>
           Graduation Details (Post Graduates Only)
         </Typography>
         <Stack direction="row" spacing={2} alignItems="center">
@@ -465,42 +479,45 @@ const StudentUpdateForm = ({ studentProfile }) => {
           />
         </Stack>
       </Stack>
-      <Stack spacing={2} sx={{ width: "100%" }}>
+      <Divider flexItem />
+      <Stack spacing={2} sx={{ width: "100%", padding: "0px 24px" }}>
         <Typography variant="h5" color="text.secondary" sx={{ fontFamily: "Nunito" }}>
           Contact Details
         </Typography>
-        <StudentFormTextField
-          formData={formData}
-          setFormData={setFormData}
-          name="phoneNo"
-          value={formData.phoneNo}
-          label="Phone Number"
-          isNecessary={true}
-          editable={editable}
-          helpTxt="Your Primary 10 digit Phone Number | eg : 8678912345"
-          type="number/text"
-        />
-        <StudentFormTextField
-          formData={formData}
-          setFormData={setFormData}
-          name="altPhoneNo"
-          value={formData.altPhoneNo}
-          label="Alternate Phone Number"
-          isNecessary={true}
-          editable={editable}
-          helpTxt="your alternate phone number | eg : 8678912345"
-          type="number/text"
-        />
-        <StudentFormTextField
-          formData={formData}
-          setFormData={setFormData}
-          name="personalEmail"
-          value={formData.personalEmail}
-          isNecessary={true}
-          label="Personal Email"
-          editable={editable}
-          helpTxt="Please provide your personal Email Id"
-        />
+        <Stack direction="row" spacing={2}>
+          <StudentFormTextField
+            formData={formData}
+            setFormData={setFormData}
+            name="phoneNo"
+            value={formData.phoneNo}
+            label="Phone Number"
+            isNecessary={true}
+            editable={editable}
+            helpTxt="Your Primary 10 digit Phone Number | eg : 8678912345"
+            type="number/text"
+          />
+          <StudentFormTextField
+            formData={formData}
+            setFormData={setFormData}
+            name="altPhoneNo"
+            value={formData.altPhoneNo}
+            label="Alternate Phone Number"
+            isNecessary={true}
+            editable={editable}
+            helpTxt="your alternate phone number | eg : 8678912345"
+            type="number/text"
+          />
+          <StudentFormTextField
+            formData={formData}
+            setFormData={setFormData}
+            name="personalEmail"
+            value={formData.personalEmail}
+            isNecessary={true}
+            label="Personal Email"
+            editable={editable}
+            helpTxt="Please provide your personal Email Id"
+          />
+        </Stack>
         <StudentFormTextField
           formData={formData}
           setFormData={setFormData}
@@ -512,7 +529,8 @@ const StudentUpdateForm = ({ studentProfile }) => {
           helpTxt="Please provide link to your linkedin Profile"
         />
       </Stack>
-      <Stack spacing={2} sx={{ width: "100%" }}>
+      <Divider flexItem />
+      <Stack spacing={2} sx={{ width: "100%", padding: "0px 24px" }}>
         <Typography variant="h5" color="text.secondary" sx={{ fontFamily: "Nunito" }}>
           Placement Session Participation
         </Typography>
@@ -531,12 +549,14 @@ const StudentUpdateForm = ({ studentProfile }) => {
           editable={editable}
         />
       </Stack>
+      <Divider flexItem />
       <Button
+        size="large"
         startIcon={<UpdateIcon />}
         disabled={!editable || updateLoad}
-        endIcon={updateLoad ? <CircularProgress size={12} color="inherit" /> : null}
+        endIcon={updateLoad ? <CircularProgress size={12} /> : null}
         onClick={handleUpdateProfile}
-        variant="outlined"
+        variant="contained"
       >
         Update Profile
       </Button>
