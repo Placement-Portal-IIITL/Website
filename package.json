@@ -14,6 +14,7 @@
     "@mui/icons-material": "^5.10.6",
     "@mui/material": "^5.10.7",
     "@mui/x-data-grid": "^5.17.5",
+    "@uiw/react-md-editor": "^3.19.7",
     "axios": "^0.27.2",
     "mui-markdown": "^0.5.5",
     "react": "^18.2.0",

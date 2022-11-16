@@ -1,6 +1,5 @@
 // Hooks
-import { useState, useEffect, useContext } from "react";
-import { UserContext } from "../../../Context/userContext";
+import { useState, useEffect } from "react";
 // API
 import axios from "../../../axios";
 
@@ -9,10 +8,7 @@ import { Stack, Typography } from "@mui/material";
 
 // components
 import Anouncement from "./Anouncement.js";
-import AddAnouncement from "./AddAnouncement";
 const Feed = () => {
-  // user Context
-  const [user, setUser] = useContext(UserContext);
   const [anouncements, setAnouncements] = useState([]);
 
   const [updateFeed, setUpdateFeed] = useState(false);
@@ -24,7 +20,7 @@ const Feed = () => {
   }, [updateFeed]);
   return (
     <Stack
-      sx={{ width: "100%", minHeight: 600, padding: "20px 24px", bgcolor: "rgba(0,0,0,0.05)" }}
+      sx={{ width: "100%", minHeight: 600, padding: "20px 24px", bgcolor: "rgba(0,0,0,0.02)" }}
       alignItems="center"
     >
       <Typography variant="h4" color="text.secondary">
@@ -40,7 +36,6 @@ const Feed = () => {
         alignItems="center"
         spacing={2}
       >
-        {user && user.roles.includes("PLACEMENT_TEAM") && <AddAnouncement />}
         {anouncements.map((e) => (
           <div key={e._id}>
             <Anouncement anouncement={e} setUpdateFeed={setUpdateFeed} />

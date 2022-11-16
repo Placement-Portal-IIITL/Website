@@ -17,6 +17,7 @@ import Company from "./Company/Company";
 import Recruiter from "./Recruiter/Recruiter";
 import Student from "./Student/Student";
 import Support from "./Support/Support";
+import Announcement from "./Announcement/Announcement";
 
 const Team = () => {
   // user context
@@ -69,6 +70,8 @@ const Team = () => {
                 <Student />
               ) : params.panel === "support" ? (
                 <Support />
+              ) : params.panel === "announcement" ? (
+                <Announcement />
               ) : null}
             </Stack>
           )}

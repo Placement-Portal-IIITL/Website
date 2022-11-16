@@ -9,8 +9,8 @@ import { Stack, Avatar, Typography, Chip } from "@mui/material";
 import { IconButton, Divider } from "@mui/material";
 
 // MUI Icons
-import StatsIcon from "@mui/icons-material/BarChart";
-import ProcessIcon from "@mui/icons-material/NaturePeople";
+// import StatsIcon from "@mui/icons-material/BarChart";
+// import ProcessIcon from "@mui/icons-material/NaturePeople";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import CompanyIcon from "@mui/icons-material/Apartment";
 import PartnerIcon from "@mui/icons-material/Handshake";
@@ -138,6 +138,12 @@ const TeamNavigation = ({ studentProfile }) => {
         Icon={<HelpIcon size="small" color="primary" />}
         text="Support"
         active={params.panel === "support"}
+      />
+      <Item
+        url="/team/announcement"
+        Icon={<HelpIcon size="small" color="primary" />}
+        text="Announcements"
+        active={params.panel === "announcement"}
       />
     </Stack>
   );
