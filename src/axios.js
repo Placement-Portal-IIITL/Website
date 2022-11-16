@@ -5,7 +5,7 @@ const userLocal = "IIITL_Placement_Portal_User";
 
 // axios header instance
 const instance = axios.create({
-  baseURL: "https://placements-iiitl.herokuapp.com",
+  baseURL: process.env.REACT_APP_API,
   withCredentials: true,
 });
 

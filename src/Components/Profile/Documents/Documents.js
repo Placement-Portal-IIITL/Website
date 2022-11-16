@@ -8,7 +8,6 @@ import { Stack, CircularProgress, Alert } from "@mui/material";
 import { Avatar, Paper, Typography, Chip } from "@mui/material";
 
 // MUI Icons
-import PhotoIcon from "@mui/icons-material/Face6";
 import CheckIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 
@@ -17,46 +16,25 @@ import Download from "./DocumentDownload";
 import View from "./DocumentPreview";
 import Update from "./DocumentUpdate";
 
-const Documents = () => {
+const Documents = ({ studentProfile, setStudentProfile }) => {
   // documents states
-  const [aadhar, setAadhar] = useState("");
-  const [pan, setPan] = useState("");
-  const [photo, setPhoto] = useState("");
-  const [url, setUrl] = useState("");
+  const [aadhar, setAadhar] = useState(studentProfile.aadhar || "");
+  const [pan, setPan] = useState(studentProfile.PAN || "");
+  const [photo, setPhoto] = useState(studentProfile.photo || "");
+  const [url, setUrl] = useState(studentProfile.photo || "");
+
+  // states
   const [currDoc, setCurrDoc] = useState("Photo");
   const [Loading, setLoading] = useState(false);
 
-  const getDocuments = async () => {
-    setLoading(true);
-    axios
-      .get("/getStudentProfile")
-      .then((res) => {
-        // console.log(res.data);
-        setAadhar(res.data.aadhar);
-        setPan(res.data.PAN);
-        setPhoto(res.data.photo);
-        if (currDoc === "Photo") setUrl(res.data.photo);
-        else if (currDoc === "Aadhar") setUrl(res.data.aadhar);
-        else if (currDoc === "PAN") setUrl(res.data.PAN);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setLoading(false);
-        console.log(err.response.data);
-      });
-  };
-
-  // fetch resume link
-  useEffect(() => {
-    getDocuments();
-  }, [aadhar, pan, photo]);
-
   // documents view box
   const DocBox = ({ src, docName, docURL }) => {
+    // handle document click
     const handleClick = () => {
       setUrl(docURL);
       setCurrDoc(docName);
     };
+
     return (
       <Paper
         sx={{ padding: "15px 24px", cursor: "pointer" }}
@@ -91,6 +69,7 @@ const Documents = () => {
       </Paper>
     );
   };
+
   return (
     <Stack sx={{ minHeight: "calc(100vh - 64px)", width: "100%" }}>
       {Loading && (
