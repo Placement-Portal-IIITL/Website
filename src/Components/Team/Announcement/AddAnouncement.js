@@ -10,12 +10,38 @@ import { FormGroup, FormControlLabel, Checkbox, MenuItem, Paper } from "@mui/mat
 
 import MDEditor from "@uiw/react-md-editor";
 
+const basicTemplate = `|         Hiring         |    On-Campus     |
+| :--------------------: | :--------------: |
+|      **Company**       |  _Company Name_  |
+|     **Offer Type**     | _6 Months + FTE_ |
+|        **Role**        |      _SDE_       |
+|        **CTC**         |     _XY LPA_     |
+|        **Base**        |     _XY LPA_     |
+| **Internship Stipend** |  _xx,000/month_  |
+|      **Location**      |     _India_      |
+
+---
+
+### Dates
+
+Tentative OA Date : 
+
+Tentative Interview Date :
+
+### Additional Details
+`;
+
 const AddAnouncement = ({ setUpdateFeed }) => {
   // states
-  const [feed, setFeed] = useState({ title: "", content: "", year: 2022, courseId: [] });
+  const [feed, setFeed] = useState({
+    title: "On-Campus Hiring | Company Name",
+    content: "",
+    year: 2022,
+    courseId: [],
+  });
   const [courseList, setCourseList] = useState([]);
   const [sending, setSending] = useState(false);
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState(basicTemplate);
 
   const handleChange = (e) => {
     setFeed({ ...feed, [e.target.name]: e.target.value });
@@ -49,12 +75,18 @@ const AddAnouncement = ({ setUpdateFeed }) => {
   };
 
   return (
-    <Paper elevation={3} sx={{ width: "100%", padding: "20px", borderRadius: "10px" }}>
+    <Paper elevation={3} sx={{ width: "100%", padding: "15px 24px", borderRadius: "10px" }}>
       <Stack spacing={2} sx={{ bgcolor: "white", width: "100%", padding: "10px 15px" }}>
-        <Typography variant="h6" sx={{ fontFamily: "Nunito" }}>
-          New Anouncement
+        <Typography variant="h5" color="primary">
+          <strong>New Anouncement</strong>
         </Typography>
-        <TextField name="title" label="Title" value={feed.title} onChange={handleChange} />
+        <TextField
+          name="title"
+          label="Title"
+          value={feed.title}
+          onChange={handleChange}
+          size="small"
+        />
         <div className="container">
           <MDEditor
             value={content}
@@ -64,20 +96,13 @@ const AddAnouncement = ({ setUpdateFeed }) => {
           />
           <MDEditor.Markdown source={feed.content} style={{ whiteSpace: "pre-wrap" }} />
         </div>
-        {/* <TextField
-        name="content"
-        label="Post Content"
-        multiline
-        minRows={5}
-        value={feed.content}
-        onChange={handleChange}
-      /> */}
         <TextField
           name="year"
           label="Passing Year"
           select
           value={feed.year}
           onChange={handleChange}
+          size="small"
         >
           <MenuItem value={2022}>2022</MenuItem>
           <MenuItem value={2023}>2023</MenuItem>
@@ -89,7 +114,7 @@ const AddAnouncement = ({ setUpdateFeed }) => {
         <Stack>
           {courseList &&
             courseList.map((course) => (
-              <FormGroup key={course._id}>
+              <FormGroup key={course._id} size="small">
                 <FormControlLabel
                   control={
                     <Checkbox

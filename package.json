@@ -16,7 +16,6 @@
     "@mui/x-data-grid": "^5.17.5",
     "@uiw/react-md-editor": "^3.19.7",
     "axios": "^0.27.2",
-    "mui-markdown": "^0.5.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-helmet-async": "^1.3.0",

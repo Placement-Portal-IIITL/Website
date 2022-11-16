@@ -145,6 +145,7 @@ const NavMenu = () => {
         {user && user?.roles.includes("STUDENT") && (
           <Item Icon={<HelpIcon fontSize="small" />} text="Contact" url="/contact" />
         )}
+        {user && <Divider />}
         {user && user?.roles.includes("PLACEMENT_TEAM") && !user.roles.includes("STUDENT") && (
           <Item
             Icon={<RegisterIcon fontSize="small" />}

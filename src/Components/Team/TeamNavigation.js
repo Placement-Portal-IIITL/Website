@@ -16,6 +16,7 @@ import CompanyIcon from "@mui/icons-material/Apartment";
 import PartnerIcon from "@mui/icons-material/Handshake";
 import StudentIcon from "@mui/icons-material/PeopleAlt";
 import HelpIcon from "@mui/icons-material/HelpCenter";
+import FeedIcon from "@mui/icons-material/Feed";
 
 // create viewable google drive link
 const generateViewURL = (url) => {
@@ -141,7 +142,7 @@ const TeamNavigation = ({ studentProfile }) => {
       />
       <Item
         url="/team/announcement"
-        Icon={<HelpIcon size="small" color="primary" />}
+        Icon={<FeedIcon size="small" color="primary" />}
         text="Announcements"
         active={params.panel === "announcement"}
       />
