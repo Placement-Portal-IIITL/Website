@@ -1,3 +1,6 @@
+// react page title
+import { Helmet } from "react-helmet-async";
+
 // Hooks
 import { useState, useContext, useEffect } from "react";
 import { UserContext } from "../../Context/userContext";
@@ -41,7 +44,6 @@ const Profile = () => {
       })
       .catch((err) => {
         setLoading(false);
-        console.log(err.response.data);
       });
   };
 
@@ -51,6 +53,9 @@ const Profile = () => {
 
   return (
     <>
+      <Helmet>
+        <title>IIITL Placement Portal | Profile</title>
+      </Helmet>
       {user ? (
         <>
           {Loading ? (
@@ -63,13 +68,19 @@ const Profile = () => {
             >
               <ProfileNav studentProfile={studentProfile} />
               {params.subprofile === "manage" ? (
-                <ManageProfile studentProfile={studentProfile} />
+                <ManageProfile
+                  studentProfile={studentProfile}
+                  setStudentProfile={setStudentProfile}
+                />
               ) : params.subprofile === "resume" ? (
-                <Resume />
+                <Resume studentProfile={studentProfile} setStudentProfile={setStudentProfile} />
               ) : params.subprofile === "documents" ? (
-                <Documents />
+                <Documents studentProfile={studentProfile} setStudentProfile={setStudentProfile} />
               ) : (
-                <ManageProfile studentProfile={studentProfile} />
+                <ManageProfile
+                  studentProfile={studentProfile}
+                  setStudentProfile={setStudentProfile}
+                />
               )}
             </Stack>
           )}

@@ -44,19 +44,17 @@ const NavBar = () => {
   const navigate = useNavigate();
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="sticky" className="NavBar">
-        <Toolbar sx={{ height: 48 }}>
-          <NavTitle />
-          {user && <NavMenu />}
-          {!user && (
-            <Button className="NavBar-Login-Btn" onClick={() => navigate("/Login")}>
-              Login
-            </Button>
-          )}
-        </Toolbar>
-      </AppBar>
-    </Box>
+    <AppBar position="sticky" className="NavBar">
+      <Toolbar sx={{ height: 48 }}>
+        <NavTitle />
+        {user && <NavMenu />}
+        {!user && (
+          <Button className="NavBar-Login-Btn" onClick={() => navigate("/Login")}>
+            Login
+          </Button>
+        )}
+      </Toolbar>
+    </AppBar>
   );
 };
 

@@ -24,7 +24,7 @@ import DeleteIcon from "@mui/icons-material/DeleteForever";
 import SearchIcon from "@mui/icons-material/Search";
 
 // assets
-import CopyableText from "../../assets/copyText";
+import CopyableText from "../../assets/MicroComponents/copyText";
 
 // Components
 import CompanyFilters from "./CompanyFilters";

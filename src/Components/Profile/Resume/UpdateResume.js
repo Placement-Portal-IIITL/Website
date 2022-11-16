@@ -4,11 +4,18 @@ import { useState } from "react";
 import axios from "../../../axios";
 
 // MUI Components
-import { Stack, TextField, Button } from "@mui/material";
+import { Stack, TextField, Button, InputAdornment } from "@mui/material";
 import { CircularProgress } from "@mui/material";
 
 // MUI Icons
 import UpdateIcon from "@mui/icons-material/Upload";
+import GoogleDriveIcon from "@mui/icons-material/AddToDrive";
+
+const Style = {
+  maxWidth: 600,
+  "& label": { fontFamily: "Nunito" },
+  "& input": { fontFamily: "Nunito", fontSize: "14px" },
+};
 
 const UpdateResume = ({ setUrl, url }) => {
   // update states
@@ -22,7 +29,9 @@ const UpdateResume = ({ setUrl, url }) => {
     axios
       .post("/updateStudentProfile", { resumeLink: link })
       .then((res) => {
-        setUrl(link);
+        setUrl((prev) => {
+          return { ...prev, resumeLink: link };
+        });
         setLoading(false);
       })
       .catch((err) => {
@@ -37,29 +46,33 @@ const UpdateResume = ({ setUrl, url }) => {
   };
 
   return (
-    <Stack spacing={2} sx={{ width: "100%", maxWidth: 600 }}>
+    <Stack spacing={2} sx={{ width: "100%", flexGrow: 1, padding: "15px 0px" }}>
       <TextField
+        fullWidth
         size="small"
         variant="standard"
         label="Google Drive Link"
-        onChange={handleChange}
         name="link"
-        fullWidth
-        value={link}
-        sx={{
-          "& label": { fontFamily: "Nunito" },
-          "& p": { fontFamily: "Nunito", fontWeight: 600 },
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <GoogleDriveIcon fontSize="small" color="primary" />
+            </InputAdornment>
+          ),
         }}
+        sx={Style}
+        onChange={handleChange}
+        value={link}
       />
       <Button
         startIcon={<UpdateIcon />}
-        endIcon={Loading ? <CircularProgress size={12} color="inherit" /> : null}
+        endIcon={Loading ? <CircularProgress size={12} /> : null}
         variant="outlined"
         color="primary"
         size="small"
+        sx={{ maxWidth: 300, textTransform: "none" }}
         onClick={handleClick}
         disabled={disabled}
-        sx={{ maxWidth: 300 }}
       >
         Update Resume Link
       </Button>

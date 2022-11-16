@@ -17,7 +17,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import UpdateIcon from "@mui/icons-material/Replay";
 
 // assets
-import CopyableText from "../../assets/copyText";
+import CopyableText from "../../assets/MicroComponents/copyText";
 
 // Components
 import StudentFilters from "./StudentFilters";

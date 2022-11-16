@@ -11,12 +11,19 @@ import { BrowserRouter as Router } from "react-router-dom";
 // Context
 import { CurrentUserProvider } from "./Context/userContext";
 
+// react helmet
+import { HelmetProvider } from "react-helmet-async";
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <Router>
-    <CurrentUserProvider>
-      <App />
-    </CurrentUserProvider>
-  </Router>
+  <React.StrictMode>
+    <Router>
+      <HelmetProvider>
+        <CurrentUserProvider>
+          <App />
+        </CurrentUserProvider>
+      </HelmetProvider>
+    </Router>
+  </React.StrictMode>
 );
 reportWebVitals();

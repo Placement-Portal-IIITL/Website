@@ -10,7 +10,7 @@ import { Dialog, DialogActions, DialogContent } from "@mui/material";
 import { TextField, DialogTitle, CircularProgress } from "@mui/material";
 
 // assets
-import CopyableText from "../../assets/copyText";
+import CopyableText from "../../assets/MicroComponents/copyText";
 
 const DeleteRecruiter = ({ recruiter, open, setOpen, setListChanged }) => {
   // States

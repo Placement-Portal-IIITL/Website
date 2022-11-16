@@ -1,9 +1,10 @@
-export const debounce = (fn) => {
+// Debounce to delay query search
+export const debounce = (event) => {
   let timer;
-  return (e) => {
+  return (newEvent) => {
     clearTimeout(timer);
     timer = setTimeout(() => {
-      fn.apply(this, [e]);
+      event.apply(this, [newEvent]);
     }, 500);
   };
 };

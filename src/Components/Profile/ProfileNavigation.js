@@ -1,6 +1,3 @@
-// Hooks
-import { useEffect, useState } from "react";
-
 // React Router
 import { Link, useParams } from "react-router-dom";
 
@@ -14,12 +11,8 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import FolderIcon from "@mui/icons-material/Folder";
 import ResumeIcon from "@mui/icons-material/Description";
 
-// create viewable google drive link
-const generateViewURL = (url) => {
-  const prefix = "https://drive.google.com/file/d/";
-  const documentId = url.replace(prefix, "").split("/")[0];
-  return "https://drive.google.com/uc?export=view&id=" + documentId;
-};
+// assets
+import generateViewURL from "../assets/Methods/GenerateGoogleDriveViewURL";
 
 const ProfileAvatar = ({ photoURL, Name, linkedinURL }) => {
   // Opening Links
@@ -27,13 +20,19 @@ const ProfileAvatar = ({ photoURL, Name, linkedinURL }) => {
     window.open(linkedinURL, "_blank").focus();
   };
 
+  // default user Photo
+  const defaultPhotoURL = "/images/userImg.png";
+
   return (
     <Stack spacing={1} justifyContent="center" alignItems="center" sx={{ width: "100%" }}>
-      <Avatar sx={{ width: 56, height: 56 }} alt={Name} src={generateViewURL(photoURL)} />
+      <Avatar
+        sx={{ width: 56, height: 56 }}
+        alt={Name}
+        src={!photoURL?.length ? defaultPhotoURL : generateViewURL(photoURL)}
+      />
       <Typography sx={{ fontFamily: "nunito" }} variant="body">
         {Name}
       </Typography>
-
       <IconButton color="primary" size="small" onClick={OpenLink}>
         <LinkedInIcon />
       </IconButton>
@@ -57,14 +56,6 @@ const Item = ({ url, Icon, text, active }) => {
 const ProfileNavigation = ({ studentProfile }) => {
   // calling hooks
   const params = useParams();
-  const [profile, setProfile] = useState({ photo: "", name: "", linkedin: "" });
-  useEffect(() => {
-    setProfile({
-      photo: studentProfile.photo,
-      name: studentProfile.name,
-      linkedin: studentProfile.linkedin,
-    });
-  }, [studentProfile]);
 
   return (
     <Stack
@@ -77,9 +68,9 @@ const ProfileNavigation = ({ studentProfile }) => {
       alignItems="center"
     >
       <ProfileAvatar
-        Name={profile.name}
-        photoURL={profile?.photo?.length ? profile.photo : "/images/userImg.png"}
-        linkedinURL={profile.linkedin}
+        Name={studentProfile.name}
+        photoURL={studentProfile.photo}
+        linkedinURL={studentProfile.linkedin}
       />
       <Divider flexItem />
       <Item

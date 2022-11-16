@@ -23,7 +23,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import MoreIcon from "@mui/icons-material/MoreVert";
 
 // assets
-import CopyableText from "../../assets/copyText";
+import CopyableText from "../../assets/MicroComponents/copyText";
 
 // Components
 import DeleteRecruiter from "./DeleteRecruiter";

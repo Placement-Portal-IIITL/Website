@@ -1,6 +1,8 @@
+/* Fonts */
 @import url("https://fonts.googleapis.com/css2?family=Staatliches");
 @import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
 
+/* Global CSS */
 * {
   margin: 0;
   padding: 0;
@@ -19,6 +21,7 @@ a {
   cursor: pointer;
 }
 
+/* Scroll Bar css */
 /* width */
 ::-webkit-scrollbar {
   width: 5px;
