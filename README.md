@@ -8,6 +8,7 @@ Frontend
 
 ## Future work
 
+-Interview Experiences
 - Methods & rest API Centralization
 - Components Independency and sync
 - Fluid Architecture
